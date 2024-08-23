@@ -58,14 +58,7 @@ export default function Home() {
         <PostBox
           id={post.id}
           key={post.id}
-          text={post.text}
-          username={post.user.username}
-          profilePhoto={post.user.photo}
-          image={post.image}
-          video={post.video}
-          createdAt={post.createdAt}
-          likes={post.likes}
-          comments={post.comments}
+          bookmarks={userInfo?.bookmarks}
         />
       ))}
     </div>

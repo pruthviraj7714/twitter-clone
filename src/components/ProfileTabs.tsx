@@ -2,19 +2,19 @@
 import { useEffect, useState } from "react";
 import PostBox from "./PostBox";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 import { useToast } from "./ui/use-toast";
 
 export default function ProfileTabs({
   posts,
+  bookmarks,
 }: {
   posts: any[];
+  bookmarks: any[];
 }) {
   const session = useSession();
   const Tabs = ["Posts", "Replies", "Media"];
   const [activeTab, setActiveTab] = useState<any>("Posts");
   const { toast } = useToast();
-
 
   return (
     <div className="flex flex-col w-full px-2">
@@ -46,7 +46,7 @@ export default function ProfileTabs({
               {posts &&
                 posts.length > 0 &&
                 posts.map((post: any) => (
-                  <PostBox id={post.id} key={post.id} />
+                  <PostBox id={post.id} key={post.id} bookmarks={bookmarks} />
                 ))}
             </div>
           </div>

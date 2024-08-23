@@ -34,7 +34,11 @@ export async function GET(req: NextRequest) {
         headerPhoto: true,
         bio: true,
         likes: true,
-        bookmarks: true,
+        bookmarks : {
+          select : {
+            postId : true
+          }
+        },
         comments: true,
         photo: true,
       },

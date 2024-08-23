@@ -67,10 +67,16 @@ export async function DELETE(req: NextRequest) {
     }
 
     await prisma.like.deleteMany({
-      where : {
-        postId
-      }
-    })
+      where: {
+        postId,
+      },
+    });
+
+    await prisma.bookmark.deleteMany({
+      where: {
+        postId,
+      },
+    });
 
     await prisma.post.delete({
       where: {
@@ -84,7 +90,7 @@ export async function DELETE(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error : any) {
+  } catch (error: any) {
     console.log("Error deleting post:", error.message);
     return NextResponse.json(
       {

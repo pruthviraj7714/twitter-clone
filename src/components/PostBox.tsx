@@ -1,11 +1,10 @@
 "use client";
 import { Bookmark, Dot, Ellipsis, Reply, Share, Trash2 } from "lucide-react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa";
 import { format } from "date-fns";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
@@ -14,14 +13,20 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 
-export default function PostBox({ id }: { id: string }) {
+export default function PostBox({
+  id,
+  bookmarks,
+}: {
+  id: string;
+  bookmarks: any[];
+}) {
   const router = useRouter();
   const session = useSession();
   const [postInfo, setPostInfo] = useState<any>({});
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const { toast } = useToast();
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [bookmarked, setBookmarked] = useState<boolean>(false);
   const [loading, setIsLoading] = useState<boolean>(true);
+  const { toast } = useToast();
 
   const now = new Date();
   const createdAt = postInfo?.createdAt || now;
@@ -44,6 +49,30 @@ export default function PostBox({ id }: { id: string }) {
     relativeTime = format(new Date(createdAt), "yyyy");
   }
 
+  const getPostInfo = async () => {
+    try {
+      const res = await axios.get(`/api/post/info?postId=${id}`);
+      setPostInfo(res.data.post);
+      console.log(res.data);
+
+      setIsLiked(
+        res.data.post.likes?.some(
+          (l: any) => l.userId === Number(session.data?.user?.id)
+        )
+      );
+      setBookmarked(
+       bookmarks.some((l : any) => l.postId === id)
+      );
+    } catch (error: any) {
+      toast({
+        title: error?.response?.data?.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleLike = async () => {
     try {
       const res = await axios.post(`/api/post/like?postId=${id}`, {});
@@ -59,30 +88,25 @@ export default function PostBox({ id }: { id: string }) {
     }
   };
 
-  const getPostInfo = async () => {
+  const handleBookmark = async () => {
     try {
-      const res = await axios.get(`/api/post/info?postId=${id}`);
-      setPostInfo(res.data.post);
-      setIsLiked(
-        res.data.post.likes?.some(
-          (l: any) => l.userId === Number(session.data?.user?.id)
-        )
-      );
+      const res = await axios.post(`/api/post/bookmark?postId=${id}`, {});
+      setBookmarked(!bookmarked);
+      toast({
+        title: res.data.message,
+      });
     } catch (error: any) {
       toast({
         title: error.response.data.message,
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleDeletePost = async () => {
     try {
       const res = await axios.delete(`/api/post/delete?postId=${id}`);
-      setIsDeleted(true);
-      router.refresh()
+      router.refresh();
     } catch (error: any) {
       toast({
         title: error.response.data.message,
@@ -175,16 +199,16 @@ export default function PostBox({ id }: { id: string }) {
               <Ellipsis size={20} />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-44 bg-black hover:bg-black text-white text-lg">
-            <DropdownMenuItem
+          <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
+            <div
               onClick={handleDeletePost}
-              className="hover:bg-pink-400"
+              className="bg-black hover:bg-white/5 cursor-pointer text-white text-md p-2"
             >
               <div className="flex gap-1.5 font-semibold text-red-500 ">
                 <Trash2 size={20} />
                 <span>Delete</span>
               </div>
-            </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -220,11 +244,18 @@ export default function PostBox({ id }: { id: string }) {
             size={25}
           />
         </span>
-        <span className="cursor-pointer transition-colors duration-150 hover:text-sky-500">
-          <Bookmark
-            className="hover:bg-sky-600/30 hover:rounded-full p-1"
-            size={25}
-          />
+        <span
+          onClick={handleBookmark}
+          className="cursor-pointer transition-colors duration-150 hover:text-sky-500"
+        >
+          {bookmarked ? (
+            <FaBookmark className="text-sky-500 rounded-full p-1" size={25} />
+          ) : (
+            <FaRegBookmark
+              className="hover:bg-sky-600/30 rounded-full p-1"
+              size={25}
+            />
+          )}
         </span>
       </div>
     </div>

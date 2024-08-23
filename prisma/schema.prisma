@@ -54,7 +54,7 @@ model Post {
   video     String?
   likes     Like[]
   comments  Comment[]
-  bookmark  Bookmark?
+  bookmark  Bookmark[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -93,6 +93,4 @@ model Bookmark {
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
-
-  @@unique([postId])
 }

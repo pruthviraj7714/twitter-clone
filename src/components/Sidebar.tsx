@@ -19,9 +19,12 @@ const Sidebar = () => {
             width={50}
             height={50}
           />
-          <div onClick={() => {
-            router.push('/home')
-          }} className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
+          <div
+            onClick={() => {
+              router.push("/home");
+            }}
+            className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full"
+          >
             <House className="text-white" />
             <span className="hidden lg:block">Home</span>
           </div>
@@ -33,13 +36,16 @@ const Sidebar = () => {
             <BellIcon className="text-white" />
             <span className="hidden lg:block">Notifications</span>
           </div>
-          <div className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
+          <div onClick={() => router.push('/i/bookmarks')} className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
             <Bookmark className="text-white" />
             <span className="hidden lg:block">Bookmarks</span>
           </div>
-          <div onClick={() => {
-            router.push(`/${session?.data?.user.username}`)
-          }} className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
+          <div
+            onClick={() => {
+              router.push(`/${session?.data?.user.username}`);
+            }}
+            className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full"
+          >
             <User2 className="text-white" />
             <span className="hidden lg:block">Profile</span>
           </div>

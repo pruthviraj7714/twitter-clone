@@ -35,7 +35,8 @@ export async function GET(req : NextRequest) {
                 photo : true
             }
         },
-        likes :  true
+        likes :  true,
+        bookmark : true
       }
     });
 

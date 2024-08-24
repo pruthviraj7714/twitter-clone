@@ -134,7 +134,9 @@ export default function ProfilePage({
         </div>
       </div>
       <ProfileTabs
+        username={username}
         posts={userInfo.posts}
+        likes={userInfo.likes}
         bookmarks={userInfo.bookmarks}
       />
     </div>

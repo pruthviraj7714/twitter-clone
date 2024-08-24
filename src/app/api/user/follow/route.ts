@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { followUser }: { followUser: number } = await req.json();
+    const { followUser }: { followUser: string } = await req.json();
 
     if (!followUser) {
       return NextResponse.json(
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user2 = await prisma.user.findUnique({
-      where: { id: followUser },
+      where: { username: followUser },
     });
 
     if (!user2) {
@@ -47,16 +47,16 @@ export async function POST(req: NextRequest) {
 
     const isFollowed = await prisma.follow.findFirst({
       where: {
-        followerId: Number(session.user.id),
-        followingId: followUser,
+        followerId: user2.id,
+        followingId: Number(session.user.id),
       },
     });
 
     if (!isFollowed) {
       await prisma.follow.create({
         data: {
-          followerId: Number(session.user.id),
-          followingId: followUser,
+          followerId: user2.id,
+          followingId: Number(session.user.id),
         },
       });
       return NextResponse.json(

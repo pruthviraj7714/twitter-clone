@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const username = await req.nextUrl.searchParams.get("username");
+    const username = req.nextUrl.searchParams.get("username");
 
     if (!username) {
       return NextResponse.json(
@@ -31,8 +31,12 @@ export async function GET(req: NextRequest) {
       where: {
         username: username,
       },
-      include: {
-        followers: true,
+      select: {
+        followers: {
+          include : {
+            following : true
+          }
+        },
       },
     });
 

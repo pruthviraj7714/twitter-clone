@@ -24,7 +24,7 @@ export default function FollowTab() {
           </div>
         </div>
         <div className="flex justify-around items-center border-b border-gray-700">
-          <Link href={`/${username}/followings`}>
+          <Link href={`/${username}/following`}>
             <div
               className={`cursor-pointer py-4 text-center w-full hover:bg-white/15 px-16 ${
                 pathname.endsWith("/followings")
@@ -32,7 +32,7 @@ export default function FollowTab() {
                   : "text-gray-500"
               }`}
             >
-              Followings
+              Following
             </div>
           </Link>
           <Link href={`/${username}/followers`}>

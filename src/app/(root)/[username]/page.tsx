@@ -17,15 +17,20 @@ export default function ProfilePage({
 }) {
   const [userInfo, setUserInfo] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [isFollow, setIsFollow] = useState<boolean>(false);
   const { toast } = useToast();
-  const session = useSession();
+  const {data : session, status} = useSession();
   const username = params.username;
   const router = useRouter();
   const getUserInfo = async () => {
     try {
       const res = await axios.get(`/api/user/profile?username=${username}`);
       setUserInfo(res.data);
-    
+      // console.log(session?.user.id);
+      // console.log(res.data.followers.some((l: any) => l.followingId === Number(session?.user.id)));
+      setIsFollow(
+        res.data.followers.some((l: any) => l.followingId === Number(session?.user.id))
+      );
     } catch (error: any) {
       toast({
         title: error.response.data.message,
@@ -36,11 +41,25 @@ export default function ProfilePage({
     }
   };
 
+  const handleFollow = async () => {
+    try {
+      await axios.post("/api/user/follow", {
+        followUser: params.username,
+      });
+      setIsFollow(!isFollow);
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     getUserInfo();
   }, []);
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="min-h-screen flex justify-center items-center bg-black">
         <div className="w-16 h-16 border-4 border-sky-400 border-t-transparent border-t-4 rounded-full animate-spin"></div>
@@ -90,15 +109,19 @@ export default function ProfilePage({
             </div>
           )}
         </div>
-        {session.data?.user.username === username ? (
+        {session?.user.username === username ? (
           <Button className="rounded-full bg-transparent border border-gray-500 font-bold mt-2">
             Edit Profile
           </Button>
         ) : (
-          <div>
-            <Button className="rounded-full bg-white text-black font-semibold mt-2 hover:bg-white/85">
-              Follow
-            </Button>
+          <div onClick={handleFollow}>
+            {isFollow ? (
+              <Button className="rounded-full bg-black text-white font-semibold mt-2 hover:bg-white/10 border border-white/15 ">Following</Button>
+            ) : (
+              <Button className="rounded-full bg-white text-black font-semibold mt-2 hover:bg-white/85">
+                Follow
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -115,7 +138,7 @@ export default function ProfilePage({
         <div className="flex items-center text-sm text-gray-500 gap-3 mt-1.5">
           <div
             className="cursor-pointer hover:underline"
-            onClick={() => router.push(`/${username}/followings`)}
+            onClick={() => router.push(`/${username}/following`)}
           >
             <span className="font-semibold text-white">
               {userInfo.followings?.length}

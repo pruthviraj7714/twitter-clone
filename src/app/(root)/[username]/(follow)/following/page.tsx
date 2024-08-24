@@ -6,63 +6,63 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-export default function FollowersPage({
+export default function FollowingsPage({
   params,
 }: {
   params: {
     username: string;
   };
 }) {
-  const [follwers, setFollwers] = useState<any[]>([]);
-  const {data : session, status} = useSession();
+  const [followings, setFollowings] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const {isLoading, userInfo} = useUserInfo();
+  const { data: session, status } = useSession();
+  const { isLoading, userInfo } = useUserInfo();
   const { toast } = useToast();
-  const getFollowers = async () => {
+
+  const getFollowings = async () => {
     try {
-      const res = await axios.get("/api/user/followers", {
+      const res = await axios.get("/api/user/following", {
         params: {
           username: params.username,
         },
       });
-      setFollwers(res.data.followers);
+      console.log(res.data.followings);
+      setFollowings(res.data.followings);
     } catch (error: any) {
       toast({
         title: error?.response?.data.message,
         variant: "destructive",
       });
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    getFollowers();
-  }, []);
+    if (status === "authenticated") {
+      getFollowings();
+    }
+  }, [status]);
 
-  if(loading || isLoading || status === 'loading') {
-    return (
-      <div>
-        Loading...
-      </div>
-    )
+  if (loading || isLoading || status !== "authenticated") {
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="flex flex-col border-l border-r border-white/15 min-h-screen">
-      {follwers && follwers.length > 0 ? (
-        follwers.map((f: any) => (
+      {followings && followings.length > 0 ? (
+        followings.map((f: any) => (
           <ProfileCard
             key={f.id}
-            username={f?.following?.username}
-            profilePhoto={f?.following?.photo}
-            bio={f?.following?.bio}
-            isFollow={userInfo.followings.some((l : any) => l.followerId === f.followingId)}
+            username={f.follower.username}
+            profilePhoto={f.follower.photo}
+            bio={f.follower.bio}
+            isFollow={userInfo.followings.some((l : any) => l.followerId === f.followerId)}
           />
         ))
       ) : (
         <div className="flex justify-center items-center text-xl font-bold h-36">
-          @{params.username} doesn’t have any followers.
+          @{params.username} doesn’t follow anyone yet.
         </div>
       )}
     </div>

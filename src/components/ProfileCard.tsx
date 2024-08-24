@@ -1,17 +1,42 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useToast } from "./ui/use-toast";
+import { useSession } from "next-auth/react";
 
 export default function ProfileCard({
   username,
   profilePhoto,
   bio,
+  isFollow,
 }: {
   username: string;
   profilePhoto: string;
   bio: string;
+  isFollow: boolean;
 }) {
+  const [isFollowing, setIsFollowing] = useState<boolean>(isFollow);
   const router = useRouter();
+  const { toast } = useToast();
+  const session = useSession();
+  const handleFollow = async () => {
+    try {
+      await axios.post("/api/user/follow", {
+        followUser: username,
+      });
+      setIsFollowing(!isFollowing);
+    } catch (error: any) {
+      toast({
+        title: error?.response?.data.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {}, []);
+
   return (
     <div className="w-full border-b border-white/15 hover:bg-white/5 p-2 px-2">
       <div className="flex justify-between mb-2">
@@ -43,11 +68,17 @@ export default function ProfileCard({
             <p>{bio}</p>
           </div>
         </div>
-        <div>
-          <Button className="rounded-full bg-white text-black font-semibold mt-2 hover:bg-white/85">
-            Follow
-          </Button>
-        </div>
+        {username !== session.data?.user.username && (
+          <div onClick={handleFollow}>
+            {isFollowing ? (
+              <Button>Unfollow</Button>
+            ) : (
+              <Button className="rounded-full bg-white text-black font-semibold mt-2 hover:bg-white/85">
+                Follow
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

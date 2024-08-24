@@ -34,10 +34,14 @@ export default function FollowingsPage({
   }, []);
 
   return (
-    <div className="flex flex-col border-l border-r border-white/15">
-      {followings.map((f: any) => (
+    <div className="flex flex-col border-l border-r border-white/15 min-h-screen">
+      {followings && followings.length > 0 ? (followings.map((f: any) => (
         <ProfileCard username={f.username} profilePhoto={f.photo} bio={f.bio} />
-      ))}
+      ))) : (
+        <div className="flex justify-center items-center text-xl font-bold h-36">
+           @{params.username} doesn’t followed anyone yet.
+        </div>
+      )}
     </div>
   );
 }

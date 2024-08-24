@@ -34,10 +34,20 @@ export default function FollowersPage({
   }, []);
 
   return (
-    <div className="flex flex-col border-l border-r border-white/15">
-      {follwers.map((f: any) => (
-        <ProfileCard username={f.username} profilePhoto={f.photo} bio={f.bio} />
-      ))}
+    <div className="flex flex-col border-l border-r border-white/15 min-h-screen">
+      {follwers && follwers.length > 0 ? (
+        follwers.map((f: any) => (
+          <ProfileCard
+            username={f.username}
+            profilePhoto={f.photo}
+            bio={f.bio}
+          />
+        ))
+      ) : (
+        <div className="flex justify-center items-center text-xl font-bold h-36">
+          @{params.username} doesn’t have any followers.
+        </div>
+      )}
     </div>
   );
 }

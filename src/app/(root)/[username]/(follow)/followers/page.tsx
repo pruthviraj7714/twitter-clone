@@ -1,16 +1,43 @@
+"use client";
 import ProfileCard from "@/components/ProfileCard";
+import { useToast } from "@/components/ui/use-toast";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
+export default function FollowersPage({
+  params,
+}: {
+  params: {
+    username: string;
+  };
+}) {
+  const [follwers, setFollwers] = useState<any[]>([]);
+  const { toast } = useToast();
+  const getFollowers = async () => {
+    try {
+      const res = await axios.get("/api/user/followers", {
+        params: {
+          username: params.username,
+        },
+      });
+      setFollwers(res.data.followers);
+    } catch (error: any) {
+      toast({
+        title: error?.response?.data.message,
+        variant: "destructive",
+      });
+    }
+  };
 
-export default function FollowersPage() {
-    return (
-        <div className="flex flex-col border-l border-r border-white/15">
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-            <ProfileCard username="test" profilePhoto="" bio="Hello there i'm from USA"  />
-        </div>
-    )
+  useEffect(() => {
+    getFollowers();
+  }, []);
+
+  return (
+    <div className="flex flex-col border-l border-r border-white/15">
+      {follwers.map((f: any) => (
+        <ProfileCard username={f.username} profilePhoto={f.photo} bio={f.bio} />
+      ))}
+    </div>
+  );
 }

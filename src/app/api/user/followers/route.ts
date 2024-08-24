@@ -16,8 +16,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const pathSegments = req.nextUrl.pathname.split('/');
-    const username = pathSegments[1];
+    const username = await req.nextUrl.searchParams.get("username");
 
     if (!username) {
       return NextResponse.json(
@@ -40,7 +39,7 @@ export async function GET(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message: "User Not Found!",
+          message: "User not found!",
         },
         { status: 404 }
       );
@@ -48,9 +47,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       message: "Success",
-      data: user.followers,
+      followers: user.followers,
     });
-
   } catch (error) {
     console.error("Error fetching user:", error);
     return NextResponse.json(

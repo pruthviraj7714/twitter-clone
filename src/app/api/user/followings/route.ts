@@ -16,8 +16,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const pathSegments = req.nextUrl.pathname.split('/');
-    const username = pathSegments[1];
+    const username = req.nextUrl.searchParams.get("username");
 
     if (!username) {
       return NextResponse.json(
@@ -48,9 +47,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       message: "Success",
-      data: user.followings,
+      followings: user.followings,
     });
-
   } catch (error) {
     console.error("Error fetching user:", error);
     return NextResponse.json(

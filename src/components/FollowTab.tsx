@@ -20,7 +20,6 @@ export default function FollowTab() {
           />
           <div className="ml-4">
             <h1 className="text-lg font-bold">{username}</h1>
-            <h2 className="text-sm text-gray-500">@{username}</h2>
           </div>
         </div>
         <div className="flex justify-around items-center border-b border-gray-700">

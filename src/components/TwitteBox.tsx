@@ -51,7 +51,7 @@ export default function Twitte({
       const file = e.target.files[0];
       setFileType(file.type.startsWith("video") ? "video" : "image");
       setSelectedFile(file);
-      setMediaUrl(URL.createObjectURL(file)); // Temporary URL for preview
+      setMediaUrl(URL.createObjectURL(file)); 
     }
   };
 
@@ -60,7 +60,6 @@ export default function Twitte({
       setUploading(true);
       let mediaUrl: string | null = null;
 
-      // Upload the file if it exists
       if (selectedFile) {
         mediaUrl = await uploadFileToCloudinary(selectedFile);
       }

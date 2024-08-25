@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req : NextRequest) {
+export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
@@ -18,43 +18,47 @@ export async function GET(req : NextRequest) {
   try {
     const postId = req.nextUrl.searchParams.get("postId");
 
-    if(!postId) {
-        return NextResponse.json({
-            message : "Post Not found!"
-        }, { status : 400})
-    }
-    
-    const post = await prisma.post.findUnique({
-      where : {
-        id : postId
-      },
-      include : {
-        user : {
-            select : {
-                username : true,
-                photo : true
-            }
+    if (!postId) {
+      return NextResponse.json(
+        {
+          message: "Post Not found!",
         },
-        likes :  true,
-        bookmark : true,
-        comments : {
-          orderBy : {
-            createdAt : "desc"
+        { status: 400 }
+      );
+    }
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            photo: true,
           },
-          include : {
-            user : {
-              select : {
-                username : true,
-                photo : true
-              }
-            }
-          }
-        }
-      }
+        },
+        likes: true,
+        bookmark: true,
+        comments: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                username: true,
+                photo: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return NextResponse.json({
-      post
+      post,
     });
   } catch (error) {
     return NextResponse.json(

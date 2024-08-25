@@ -180,7 +180,7 @@ export default function PostBox({
               onClick={() => router.push(`/${username}`)}
               className="font-semibold text-white cursor-pointer hover:underline"
             >
-              {username}
+              {postInfo?.user?.name}
             </span>
             <span className="ml-2 text-gray-400">@{username}</span>
             <span className="text-gray-400">

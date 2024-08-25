@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,13 +15,19 @@ import { DialogProps } from "@radix-ui/react-dialog";
 
 export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
   const [step, setStep] = useState(1);
+  const [name, setName] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [headerPhoto, setHeaderPhoto] = useState("");
+  const [bio, setBio] = useState("");
+  const photoRef = useRef<HTMLInputElement>(null);
+  const headerPhotoRef = useRef<HTMLInputElement>(null);
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-black text-white rounded-lg p-6">
+      <DialogContent className="sm:max-w-[525px] bg-black text-white rounded-lg p-6">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-2xl font-bold text-center">
             {step === 5 ? "Setup Complete" : "Setup your profile"}
@@ -35,20 +41,20 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
         {step === 1 && (
           <div className="grid gap-6 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right text-gray-300">
-                Username
+              <Label htmlFor="Name" className="text-right text-gray-300">
+                Name
               </Label>
               <Input
-                id="username"
-                placeholder="@username"
-                className="col-span-3 bg-[#2F3136] border-none rounded-lg text-white"
+                id="Name"
+                placeholder="Name"
+                className="col-span-3 bg-transparent rounded-lg text-white"
               />
             </div>
             <DialogFooter className="flex justify-end">
               <Button
                 variant="outline"
                 onClick={nextStep}
-                className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-6 py-2"
+                className="bg-sky-500 hover:bg-sky-600 text-white hover:text-white rounded-full px-6 py-2"
               >
                 Next
               </Button>
@@ -60,14 +66,20 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
         {step === 2 && (
           <div className="grid gap-6 py-4 text-center">
             <Label className="text-gray-300">Profile Photo</Label>
-            <Avatar className="h-24 w-24 mb-4 rounded-full mx-auto" />
-            <Button
-              variant="outline"
-              className="bg-gray-700 hover:bg-gray-600 text-white rounded-full px-6 py-2 mb-4"
-            >
-              Upload Photo
-            </Button>
-            <DialogFooter className="flex justify-between">
+            <div className="relative flex justify-center items-center">
+              <div onClick={() => photoRef.current?.click()} className="relative w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center mx-auto cursor-pointer">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full">
+                  <span className="text-white text-4xl">+</span>
+                </div>
+                <Input
+                  type="file"
+                  ref={photoRef}
+                  className="hidden"
+                />
+              </div>
+            </div>
+
+            <DialogFooter className="flex justify-between mt-4">
               <Button
                 variant="outline"
                 onClick={prevStep}
@@ -90,7 +102,18 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
         {step === 3 && (
           <div className="grid gap-6 py-4 text-center">
             <Label className="text-gray-300">Header Photo</Label>
-            <Avatar className="h-32 w-full mb-4 rounded-md mx-auto" /> 
+            <div className="relative flex justify-center items-center">
+              <div onClick={() => headerPhotoRef?.current?.click()} className="relative w-[440px] h-[280px] bg-gray-700 flex items-center justify-center mx-auto cursor-pointer">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 ">
+                  <span className="text-white text-4xl">+</span>
+                </div>
+                <Input
+                  type="file"
+                  ref={headerPhotoRef}
+                  className="hidden"
+                />
+              </div>
+            </div>
             <Button
               variant="outline"
               className="bg-gray-700 hover:bg-gray-600 text-white rounded-full px-6 py-2 mb-4"
@@ -126,7 +149,7 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
               <Input
                 id="bio"
                 placeholder="Tell us about yourself"
-                className="col-span-3 bg-[#2F3136] border-none rounded-lg text-white"
+               className="col-span-3 bg-transparent rounded-lg text-white"
               />
             </div>
             <DialogFooter className="flex justify-between">
@@ -151,11 +174,13 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
         {/* Step 5: Setup Complete */}
         {step === 5 && (
           <div className="grid gap-6 py-4 text-center">
-            <p className="text-xl text-gray-300">Your profile setup is complete!</p>
+            <p className="text-xl text-gray-300">
+              Your profile setup is complete!
+            </p>
             <DialogFooter className="flex justify-center">
               <Button
                 variant="outline"
-                onClick={() => {}}
+                onClick={() => []}
                 className="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2"
               >
                 Done

@@ -80,7 +80,7 @@ export default function ProfilePage({
           />
         </div>
         <div className="ml-6 text-md">
-          <h1 className="text-lg font-bold">{userInfo.username}</h1>
+          <h1 className="text-lg font-bold">{userInfo.name}</h1>
           <p className="text-gray-500 text-sm">
             {userInfo.posts?.length} posts
           </p>
@@ -128,8 +128,8 @@ export default function ProfilePage({
       {openProfileDialog && <ProfileSetupDialog open={openProfileDialog} onOpenChange={setOpenProfileDialog} />}
       <div className="flex flex-col justify-start p-4">
         <div>
-          <h1 className="text-xl font-bold">{userInfo.username}</h1>
-          <h4 className="text-gray-500 text-md">@Alpha17120</h4>
+          <h1 className="text-xl font-bold">{userInfo.name}</h1>
+          <h4 className="text-gray-500 text-md">@{userInfo.username}</h4>
         </div>
         <div className="text-md font-normal mt-2.5">{userInfo.bio}</div>
         <div className="flex items-center text-gray-600 text-md mt-2.5">

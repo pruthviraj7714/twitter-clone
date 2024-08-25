@@ -184,20 +184,16 @@ export default function PostPage({
           )}
         </div>
         <div className="flex-1">
-          <div className="flex justify-start items-center mb-1">
+          <div className="flex flex-col justify-start mb-1">
             <span
               onClick={() => router.push(`/${username}`)}
               className="font-semibold text-white cursor-pointer hover:underline"
             >
-              {username}
+              {postInfo?.user?.name}
             </span>
-            <span className="ml-2 text-gray-400">@{username}</span>
-            <span className="text-gray-400">
-              <Dot size={15} />
-            </span>
-            <span className="text-gray-400 text-sm">{relativeTime}</span>
+            <span className="text-white/45">@{username}</span>
           </div>
-          <div className="mb-3 font-normal text-md text-slate-200">
+          <div className="mb-3 mt-1.5 font-normal text-md text-slate-200">
             {postInfo.text}
           </div>
           {postInfo.image && (

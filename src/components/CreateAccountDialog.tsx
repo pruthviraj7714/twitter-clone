@@ -17,12 +17,14 @@ import { useState } from "react";
 const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const { toast } = useToast();
 
   const handleSignup = async () => {
     try {
       const res = await axios.post("/api/auth/signup", {
+        name,
         username,
         email,
         password,
@@ -41,7 +43,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="bg-black text-white sm:max-w-[600px] sm:max-h-[500px] rounded-2xl shadow-2xl transform transition-all duration-300 ease-out hover:scale-105">
+    <DialogContent className="bg-black text-white sm:min-w-[600px] sm:min-h-[500px] rounded-2xl shadow-2xl transform transition-all duration-300 ease-out hover:scale-105">
       <DialogHeader>
         <div className="flex justify-center items-center my-5">
           <Image
@@ -69,6 +71,20 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
             className="w-2/3 bg-transparent text-white rounded-lg px-4 py-3 shadow-inner focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
             placeholder="Enter your username"
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-4">
+          <Label
+            htmlFor="name"
+            className="w-1/3 text-right text-lg font-semibold tracking-wide"
+          >
+            Name
+          </Label>
+          <Input
+            id="name"
+            className="w-2/3 bg-transparent text-white rounded-lg px-4 py-3 shadow-inner focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+            placeholder="Enter your name"
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-4">

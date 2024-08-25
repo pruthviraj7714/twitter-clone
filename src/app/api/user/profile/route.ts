@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
       select: {
         id: true,
         username: true,
+        name : true,
         email: true,
         posts: {
           orderBy: {

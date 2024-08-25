@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
             createdAt: "desc",
           },
         },
+        name : true,
         followers: true,
         followings: true,
         headerPhoto: true,

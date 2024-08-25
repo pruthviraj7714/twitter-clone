@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { username, email, password } = parsedBody.data;
+    const { name, username, email, password } = parsedBody.data;
 
     const user = await prisma.user.findFirst({
       where: {
@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.user.create({
       data: {
+        name,
         username,
         email,
         password: hashedPassword,

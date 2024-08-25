@@ -1,6 +1,12 @@
 "use client";
 import { Bookmark, Dot, Ellipsis, Reply, Share, Trash2 } from "lucide-react";
-import { FaBookmark, FaHeart, FaRegBookmark, FaRegHeart } from "react-icons/fa";
+import {
+  FaBookmark,
+  FaHeart,
+  FaRegBookmark,
+  FaRegComment,
+  FaRegHeart,
+} from "react-icons/fa";
 import { format } from "date-fns";
 import {
   DropdownMenu,
@@ -60,9 +66,7 @@ export default function PostBox({
           (l: any) => l.userId === Number(session.data?.user?.id)
         )
       );
-      setBookmarked(
-       bookmarks.some((l : any) => l.postId === id)
-      );
+      setBookmarked(bookmarks.some((l: any) => l.postId === id));
     } catch (error: any) {
       toast({
         title: error?.response?.data?.message,
@@ -73,7 +77,8 @@ export default function PostBox({
     }
   };
 
-  const handleLike = async () => {
+  const handleLike = async (e: any) => {
+    e.stopPropagation();
     try {
       const res = await axios.post(`/api/post/like?postId=${id}`, {});
       setIsLiked(!isLiked);
@@ -88,7 +93,8 @@ export default function PostBox({
     }
   };
 
-  const handleBookmark = async () => {
+  const handleBookmark = async (e: any) => {
+    e.stopPropagation();
     try {
       const res = await axios.post(`/api/post/bookmark?postId=${id}`, {});
       setBookmarked(!bookmarked);
@@ -103,9 +109,10 @@ export default function PostBox({
     }
   };
 
-  const handleDeletePost = async () => {
+  const handleDeletePost = async (e: any) => {
+    e.stopPropagation();
     try {
-      const res = await axios.delete(`/api/post/delete?postId=${id}`);
+      await axios.delete(`/api/post/delete?postId=${id}`);
       router.refresh();
     } catch (error: any) {
       toast({
@@ -140,11 +147,20 @@ export default function PostBox({
   const { username, photo } = postInfo?.user;
 
   return (
-    <div className="w-full flex flex-col p-4 border-b border-gray-700 hover:bg-white/5 transition-colors duration-200">
+    <div
+      onClick={(e: any) => {
+        e.stopPropagation();
+        router.push(`/${username}/${id}`);
+      }}
+      className="w-full flex flex-col p-4 border-b border-gray-700 hover:bg-white/5 transition-colors duration-200"
+    >
       <div className="flex justify-between mb-2">
         <div
           className="w-10 h-10 rounded-full bg-gray-600 mr-4 overflow-hidden cursor-pointer"
-          onClick={() => router.push(`/${username}`)}
+          onClick={(e: any) => {
+            e.stopPropagation();
+            router.push(`/${username}`);
+          }}
         >
           {photo ? (
             <img
@@ -232,7 +248,7 @@ export default function PostBox({
           <span>{postInfo.likes?.length || 0}</span>
         </span>
         <span className="cursor-pointer flex items-center transition-colors duration-150 hover:text-sky-500">
-          <Reply
+          <FaRegComment
             className="hover:bg-sky-600/30 hover:rounded-full p-1"
             size={25}
           />

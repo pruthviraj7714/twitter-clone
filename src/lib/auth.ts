@@ -45,9 +45,9 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: user.id.toString(),
-          name: user.username,
+          name: user.name,
           email: user.email,
-          username: user.username
+          username: user.username,
         };
       },
     }),

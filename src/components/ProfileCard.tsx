@@ -71,7 +71,9 @@ export default function ProfileCard({
         {username !== session.data?.user.username && (
           <div onClick={handleFollow}>
             {isFollowing ? (
-              <Button className="rounded-full bg-black text-white font-semibold mt-2 border border-white/15">Following</Button>
+              <Button className="rounded-full bg-black text-white font-semibold mt-2 border border-white/15">
+                Following
+              </Button>
             ) : (
               <Button className="rounded-full bg-white text-black font-semibold mt-2 hover:bg-white/85">
                 Follow

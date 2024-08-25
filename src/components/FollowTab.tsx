@@ -27,7 +27,7 @@ export default function FollowTab() {
           <Link href={`/${username}/following`}>
             <div
               className={`cursor-pointer py-4 text-center w-full hover:bg-white/15 px-16 ${
-                pathname.endsWith("/followings")
+                pathname.endsWith("/following")
                   ? "text-white font-semibold border-b-4 border-sky-500"
                   : "text-gray-500"
               }`}

@@ -31,18 +31,27 @@ const SignInDialog = ({ open, onOpenChange }: DialogProps) => {
   const { toast } = useToast();
   const handelSignin = async () => {
     try {
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
+        redirect: false,
         email,
         password,
-        redirect: false,
       });
-      toast({
-        title: "Successfully signed in",
-      });
-      router.push("/home");
+      if (res?.ok) {
+        toast({
+          title: "Successfully signed in",
+        });
+        router.push('/home')
+      } else {
+        toast({
+          title: "signin Failed",
+          description: res?.error,
+          variant: "destructive",
+        });
+      }
     } catch (error: any) {
       toast({
-        title: error.message,
+        title: "signin Failed",
+        description: error.response.data.message,
         variant: "destructive",
       });
     }

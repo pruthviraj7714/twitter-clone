@@ -4,8 +4,6 @@ import { compare } from "bcrypt";
 import { JWT } from "next-auth/jwt";
 import db from "./db";
 
-
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -54,9 +52,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  pages: {
-    signIn: "/signin",
-  },
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
       if (user) {

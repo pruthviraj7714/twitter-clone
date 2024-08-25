@@ -1,5 +1,6 @@
 "use client";
 import ProfileTabs from "@/components/ProfileTabs";
+import { ProfileSetupDialog } from "@/components/SetupProfile";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
@@ -21,13 +22,12 @@ export default function ProfilePage({
   const { toast } = useToast();
   const {data : session, status} = useSession();
   const username = params.username;
+  const [openProfileDialog, setOpenProfileDialog] = useState<boolean>(false);
   const router = useRouter();
   const getUserInfo = async () => {
     try {
       const res = await axios.get(`/api/user/profile?username=${username}`);
       setUserInfo(res.data);
-      // console.log(session?.user.id);
-      // console.log(res.data.followers.some((l: any) => l.followingId === Number(session?.user.id)));
       setIsFollow(
         res.data.followers.some((l: any) => l.followingId === Number(session?.user.id))
       );
@@ -110,7 +110,7 @@ export default function ProfilePage({
           )}
         </div>
         {session?.user.username === username ? (
-          <Button className="rounded-full bg-transparent border border-gray-500 font-bold mt-2">
+          <Button onClick={() => setOpenProfileDialog(true)} className="rounded-full bg-transparent border border-gray-500 font-bold mt-2">
             Edit Profile
           </Button>
         ) : (
@@ -125,6 +125,7 @@ export default function ProfilePage({
           </div>
         )}
       </div>
+      {openProfileDialog && <ProfileSetupDialog open={openProfileDialog} onOpenChange={setOpenProfileDialog} />}
       <div className="flex flex-col justify-start p-4">
         <div>
           <h1 className="text-xl font-bold">{userInfo.username}</h1>

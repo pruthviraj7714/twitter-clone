@@ -12,7 +12,6 @@ export const useUserInfo = () => {
         try {
             const res = await axios.get('/api/user/info');
             setUserInfo(res.data);
-            console.log(res.data);
         } catch (error : any) {
             toast({
                 title : error.response.data.message

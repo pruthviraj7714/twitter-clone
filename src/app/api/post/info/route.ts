@@ -36,7 +36,20 @@ export async function GET(req : NextRequest) {
             }
         },
         likes :  true,
-        bookmark : true
+        bookmark : true,
+        comments : {
+          orderBy : {
+            createdAt : "desc"
+          },
+          include : {
+            user : {
+              select : {
+                username : true,
+                photo : true
+              }
+            }
+          }
+        }
       }
     });
 

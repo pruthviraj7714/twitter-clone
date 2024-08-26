@@ -14,9 +14,9 @@ export default function FollowersPage({
   };
 }) {
   const [follwers, setFollwers] = useState<any[]>([]);
-  const {data : session, status} = useSession();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
-  const {isLoading, userInfo} = useUserInfo();
+  const { isLoading, userInfo } = useUserInfo();
   const { toast } = useToast();
   const getFollowers = async () => {
     try {
@@ -31,7 +31,7 @@ export default function FollowersPage({
         title: error?.response?.data.message,
         variant: "destructive",
       });
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -40,12 +40,29 @@ export default function FollowersPage({
     getFollowers();
   }, []);
 
-  if(loading || isLoading || status === 'loading') {
+  if (loading || isLoading || status === "loading") {
     return (
-      <div>
-        Loading...
-      </div>
-    )
+      <>
+        {new Array(4).fill(null).map((_, index) => (
+          <div
+            key={index}
+            className="w-full border-b border-white/15 hover:bg-white/5 p-2 px-2 animate-pulse"
+          >
+            <div className="flex justify-between mb-2">
+              <div className="w-10 h-10 rounded-full bg-gray-600 mr-4 overflow-hidden"></div>
+              <div className="flex-1">
+                <div className="flex flex-col justify-start mb-1">
+                  <div className="h-4 bg-gray-600 rounded w-24 mb-1"></div>
+                  <div className="h-3 bg-gray-500 rounded w-16 mb-2"></div>
+                  <div className="h-4 bg-gray-700 rounded w-full"></div>
+                </div>
+              </div>
+              <div className="w-20 h-8 bg-gray-600 rounded-full"></div>
+            </div>
+          </div>
+        ))}
+      </>
+    );
   }
 
   return (
@@ -57,7 +74,9 @@ export default function FollowersPage({
             username={f?.following?.username}
             profilePhoto={f?.following?.photo}
             bio={f?.following?.bio}
-            isFollow={userInfo.followings.some((l : any) => l.followerId === f.followingId)}
+            isFollow={userInfo.followings.some(
+              (l: any) => l.followerId === f.followingId
+            )}
           />
         ))
       ) : (

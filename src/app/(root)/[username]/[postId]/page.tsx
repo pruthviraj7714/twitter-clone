@@ -20,7 +20,6 @@ import {
   FaRegHeart,
 } from "react-icons/fa";
 import { useSession } from "next-auth/react";
-import PostBox from "@/components/PostBox";
 import CommentBox from "@/components/CommentBox";
 import {
   Tooltip,
@@ -159,7 +158,68 @@ export default function PostPage({
   }, [userInfo, isLoading, postId]);
 
   if (isLoading || loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col w-full border-l border-r border-white/15 min-h-screen animate-pulse mt-10">
+        <div className="flex justify-between mb-2 w-full p-3">
+          <div className="w-10 h-10 rounded-full bg-gray-600 mr-4 overflow-hidden"></div>
+          <div className="flex-1">
+            <div className="flex flex-col justify-start mb-1">
+              <div className="h-4 bg-gray-600 rounded w-32 mb-1"></div>
+              <div className="h-4 bg-gray-500 rounded w-24"></div>
+            </div>
+            <div className="mb-3 mt-1.5 font-normal text-md">
+              <div className="h-6 bg-gray-600 rounded w-full"></div>
+              <div className="h-6 bg-gray-600 rounded w-full mt-2"></div>
+              <div className="h-6 bg-gray-600 rounded w-full mt-2"></div>
+            </div>
+
+            <div className="text-white/55 text-sm">
+              <div className="h-4 bg-gray-500 rounded w-28"></div>
+            </div>
+          </div>
+        </div>
+        <div className="border border-white/15 w-full"></div>
+        <div className="flex justify-between items-center px-2 my-2 text-gray-400">
+          <div className="cursor-pointer flex items-center">
+            <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+          </div>
+          <div className="cursor-pointer flex items-center">
+            <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+          </div>
+          <div className="cursor-pointer">
+            <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+          </div>
+          <div className="cursor-pointer flex items-center">
+            <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+          </div>
+        </div>
+        <div className="border border-white/15 w-full"></div>
+        <div className="flex gap-3 px-2 py-2 mt-2.5">
+          <div className="h-12 w-12 rounded-full bg-gray-600"></div>
+          <div className="bg-gray-600 h-8 rounded w-full"></div>
+        </div>
+        <div className="flex gap-2 justify-end items-center mb-3 mr-3">
+          <div className="rounded-full bg-gray-600 h-10 w-20"></div>
+        </div>
+        <div className="border w-full border-white/15"></div>
+        <div className="w-full flex flex-col gap-4 p-4">
+          <div className="flex gap-3">
+            <div className="w-10 h-10 bg-gray-600 rounded-full"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-gray-600 rounded w-32 mb-1"></div>
+              <div className="h-3 bg-gray-500 rounded w-full"></div>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-10 h-10 bg-gray-600 rounded-full"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-gray-600 rounded w-32 mb-1"></div>
+              <div className="h-3 bg-gray-500 rounded w-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -226,7 +286,7 @@ export default function PostPage({
             </div>
           )}
           <div className="text-white/55 text-sm">
-            {format(new Date(postInfo.createdAt), "h:mm a · MMM d, yyyy")}
+            {format(new Date(postInfo?.createdAt), "h:mm a · MMM d, yyyy")}
           </div>
         </div>
         <DropdownMenu>

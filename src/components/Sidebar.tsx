@@ -1,5 +1,5 @@
 "use client";
-import { BellIcon, Bookmark, Home, House, Search, User2 } from "lucide-react";
+import { Search} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -45,7 +45,7 @@ const Sidebar = () => {
             isActive={activeTab === "explore"}
             ActiveIcon={FaSearch}
             onClick={() => {
-              router.push("/home");
+              router.push("/explore");
               setActiveTab("explore");
             }}
             Icon={Search}
@@ -65,7 +65,7 @@ const Sidebar = () => {
             isActive={activeTab === "bookmarks"}
             ActiveIcon={GoBookmarkFill}
             onClick={() => {
-              router.push("i/bookmarks");
+              router.push("/i/bookmarks");
               setActiveTab("bookmarks");
             }}
             Icon={GoBookmark}

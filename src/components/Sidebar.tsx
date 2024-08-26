@@ -1,12 +1,24 @@
 "use client";
-import { BellIcon, Bookmark, House, Search, User2 } from "lucide-react";
+import { BellIcon, Bookmark, Home, House, Search, User2 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import SideApp from "./SideApp";
+import { useState } from "react";
+import {
+  GoBell,
+  GoBellFill,
+  GoBookmark,
+  GoBookmarkFill,
+  GoHome,
+  GoHomeFill,
+} from "react-icons/go";
+import { FaRegUser, FaSearch, FaUser } from "react-icons/fa";
 
 const Sidebar = () => {
   const router = useRouter();
   const session = useSession();
+  const [activeTab, setActiveTab] = useState<string>("home");
 
   return (
     <div className="max-h-screen w-[275px] p-4 mr-8">
@@ -19,36 +31,55 @@ const Sidebar = () => {
             width={50}
             height={50}
           />
-          <div
+          <SideApp
+            name="Home"
+            isActive={activeTab === "home"}
+            ActiveIcon={GoHomeFill}
+            onClick={() => {
+              router.push("/home"), setActiveTab("home");
+            }}
+            Icon={GoHome}
+          />
+          <SideApp
+            name="Explore"
+            isActive={activeTab === "explore"}
+            ActiveIcon={FaSearch}
             onClick={() => {
               router.push("/home");
+              setActiveTab("explore");
             }}
-            className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full"
-          >
-            <House className="text-white" />
-            <span className="hidden lg:block">Home</span>
-          </div>
-          <div className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
-            <Search className="text-white" />
-            <span className="hidden lg:block">Explore</span>
-          </div>
-          <div className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
-            <BellIcon className="text-white" />
-            <span className="hidden lg:block">Notifications</span>
-          </div>
-          <div onClick={() => router.push('/i/bookmarks')} className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full">
-            <Bookmark className="text-white" />
-            <span className="hidden lg:block">Bookmarks</span>
-          </div>
-          <div
+            Icon={Search}
+          />
+          <SideApp
+            name="Notifications"
+            isActive={activeTab === "notifications"}
+            ActiveIcon={GoBellFill}
+            onClick={() => {
+              router.push("/notifications");
+              setActiveTab("notifications");
+            }}
+            Icon={GoBell}
+          />
+          <SideApp
+            name="Bookmarks"
+            isActive={activeTab === "bookmarks"}
+            ActiveIcon={GoBookmarkFill}
+            onClick={() => {
+              router.push("i/bookmarks");
+              setActiveTab("bookmarks");
+            }}
+            Icon={GoBookmark}
+          />
+          <SideApp
+            name="Profile"
+            isActive={activeTab === "profile"}
+            ActiveIcon={FaUser}
             onClick={() => {
               router.push(`/${session?.data?.user.username}`);
+              setActiveTab("profile");
             }}
-            className="flex gap-4 my-4 text-xl font-semibold px-3 py-3 cursor-pointer hover:bg-white/10 hover:rounded-full"
-          >
-            <User2 className="text-white" />
-            <span className="hidden lg:block">Profile</span>
-          </div>
+            Icon={FaRegUser}
+          />
           <div className="text-white flex justify-center items-center bg-sky-500 text-center rounded-full font-semibold px-8 py-3 mt-4 cursor-pointer hover:bg-sky-400">
             Post
           </div>

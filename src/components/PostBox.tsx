@@ -13,6 +13,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -230,49 +236,89 @@ export default function PostBox({
       </div>
 
       <div className="flex justify-between items-center px-2 text-gray-400">
-        <span
-          onClick={handleLike}
-          className="cursor-pointer flex items-center transition-colors duration-150 hover:text-pink-500"
-        >
-          {isLiked ? (
-            <FaHeart
-              className="text-pink-500 hover:rounded-full p-1"
-              size={25}
-            />
-          ) : (
-            <FaRegHeart
-              className="hover:bg-pink-600/30 hover:rounded-full p-1"
-              size={25}
-            />
-          )}
-          <span>{postInfo.likes?.length || 0}</span>
-        </span>
-        <span className="cursor-pointer flex items-center transition-colors duration-150 hover:text-sky-500">
-          <FaRegComment
-            className="hover:bg-sky-600/30 hover:rounded-full p-1"
-            size={25}
-          />
-          <span>{postInfo.comments?.length || 0}</span>
-        </span>
-        <span className="cursor-pointer transition-colors duration-150 hover:text-sky-500">
-          <Share
-            className="hover:bg-sky-600/30 hover:rounded-full p-1"
-            size={25}
-          />
-        </span>
-        <span
-          onClick={handleBookmark}
-          className="cursor-pointer transition-colors duration-150 hover:text-sky-500"
-        >
-          {bookmarked ? (
-            <FaBookmark className="text-sky-500 rounded-full p-1" size={25} />
-          ) : (
-            <FaRegBookmark
-              className="hover:bg-sky-600/30 rounded-full p-1"
-              size={25}
-            />
-          )}
-        </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <span
+                onClick={handleLike}
+                className="cursor-pointer flex items-center transition-colors duration-150 hover:text-pink-500"
+              >
+                {isLiked ? (
+                  <FaHeart
+                    className="text-pink-500 hover:rounded-full p-1"
+                    size={25}
+                  />
+                ) : (
+                  <FaRegHeart
+                    className="hover:bg-pink-600/30 hover:rounded-full p-1"
+                    size={25}
+                  />
+                )}
+                <span>{postInfo.likes?.length || 0}</span>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-600 text-white">
+              <p>Like</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <span className="cursor-pointer flex items-center transition-colors duration-150 hover:text-sky-500">
+                <FaRegComment
+                  className="hover:bg-sky-600/30 hover:rounded-full p-1"
+                  size={25}
+                />
+                <span>{postInfo.comments?.length || 0}</span>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-600 text-white">
+              <p>Reply</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <span className="cursor-pointer transition-colors duration-150 hover:text-sky-500">
+                <Share
+                  className="hover:bg-sky-600/30 hover:rounded-full p-1"
+                  size={25}
+                />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-600 text-white">
+              <p>Share</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <span
+                onClick={handleBookmark}
+                className="cursor-pointer transition-colors duration-150 hover:text-sky-500"
+              >
+                {bookmarked ? (
+                  <FaBookmark
+                    className="text-sky-500 rounded-full p-1"
+                    size={25}
+                  />
+                ) : (
+                  <FaRegBookmark
+                    className="hover:bg-sky-600/30 rounded-full p-1"
+                    size={25}
+                  />
+                )}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-600 text-white">
+              <p>Bookmark</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </div>
   );

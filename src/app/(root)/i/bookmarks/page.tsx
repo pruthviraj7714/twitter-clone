@@ -48,13 +48,13 @@ export default function Bookmarkpage() {
             className="ml-1.5 cursor-pointer"
             size={20}
             onClick={() => {
-              router.push("/home");
+              router.back();
             }}
           />
         </div>
         <div className="ml-6 text-md">
           <h1 className="text-lg font-bold text-left">Bookmarks</h1>
-          <h1 className="text-md text-gray-500">{userInfo.username}</h1>
+          <h1 className="text-md text-gray-500">@{userInfo.username}</h1>
         </div>
       </div>
       <div className="w-full border border-white/15" />

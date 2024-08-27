@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function ProfileMiniCard({
   photo,
@@ -16,7 +17,8 @@ export default function ProfileMiniCard({
   isFollow: boolean;
 }) {
   const [isFollowing, setIsFollowing] = useState(isFollow);
-  const {toast } = useToast();
+  const { toast } = useToast();
+  const router = useRouter();
   const handleFollow = async () => {
     try {
       await axios.post("/api/user/follow", {
@@ -34,9 +36,18 @@ export default function ProfileMiniCard({
   return (
     <div className="flex justify-between items-center w-full p-2 border-b border-white/15 hover:bg-white/5 px-2">
       <div className="flex justify-start items-center gap-1.5">
-        <div className="h-10 w-10 rounded-md">
+        <div
+          onClick={() => {
+            router.push(`/${username}`);
+          }}
+          className="h-10 w-10 rounded-md cursor-pointer"
+        >
           {photo ? (
-            <img src={photo} alt="" className="w-full h-full object-contain" />
+            <img
+              src={photo}
+              alt="Profile Photo"
+              className="w-full h-full object-contain"
+            />
           ) : (
             <div className="flex justify-center items-center h-full w-full border border-white/15">
               {username?.charAt(0).toUpperCase()}
@@ -44,7 +55,14 @@ export default function ProfileMiniCard({
           )}
         </div>
         <div className="flex flex-col">
-          <h2 className="font-bold">{name}</h2>
+          <h2
+            onClick={() => {
+              router.push(`/${username}`);
+            }}
+            className="font-bold hover:underline cursor-pointer"
+          >
+            {name}
+          </h2>
           <p className="text-white/55">@{username}</p>
         </div>
       </div>

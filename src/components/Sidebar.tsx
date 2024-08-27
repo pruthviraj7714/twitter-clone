@@ -1,5 +1,5 @@
 "use client";
-import { Search} from "lucide-react";
+import { Search } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ import { FaRegUser, FaSearch, FaUser } from "react-icons/fa";
 
 const Sidebar = () => {
   const router = useRouter();
-  const session = useSession();
+  const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState<string>("home");
 
   return (
@@ -75,7 +75,7 @@ const Sidebar = () => {
             isActive={activeTab === "profile"}
             ActiveIcon={FaUser}
             onClick={() => {
-              router.push(`/${session?.data?.user.username}`);
+              router.push(`/${session?.user.username}`);
               setActiveTab("profile");
             }}
             Icon={FaRegUser}

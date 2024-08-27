@@ -39,7 +39,7 @@ export default function WhotoFollowCard() {
   }
 
   return (
-    <div className="flex flex-col justify-center border border-white/15 rounded-xl w-full mt-10 min-h-[150px]">
+    <div className="flex flex-col justify-start border border-white/15 rounded-xl w-full mt-10 min-h-[150px]">
       <h1 className="font-extrabold text-xl my-3.5 ml-2.5">Who to follow</h1>
       {users && users.length > 0 ? (
         <div>
@@ -64,7 +64,7 @@ export default function WhotoFollowCard() {
             ))}
         </div>
       ) : (
-        <div className="flex justify-center font-bold mt-5">No Users Found</div>
+        <div className="flex justify-center font-bold mt-5 text-white">No Users Found</div>
       )}
     </div>
   );

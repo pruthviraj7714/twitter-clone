@@ -189,7 +189,10 @@ export default function PostBox({
         <div className="flex-1">
           <div className="flex justify-start items-center mb-1">
             <span
-              onClick={() => router.push(`/${username}`)}
+              onClick={(e: any) => {
+                e.stopPropagation();
+                router.push(`/${username}`);
+              }}
               className="font-semibold text-white cursor-pointer hover:underline"
             >
               {postInfo?.user?.name}

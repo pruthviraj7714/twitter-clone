@@ -75,7 +75,7 @@ export default function ProfilePage({
             className="ml-1.5 cursor-pointer"
             size={20}
             onClick={() => {
-              router.push("/home");
+              router.back();
             }}
           />
         </div>

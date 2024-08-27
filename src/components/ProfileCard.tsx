@@ -8,11 +8,13 @@ import { useSession } from "next-auth/react";
 
 export default function ProfileCard({
   username,
+  name,
   profilePhoto,
   bio,
   isFollow,
 }: {
   username: string;
+  name: string;
   profilePhoto: string;
   bio: string;
   isFollow: boolean;
@@ -62,7 +64,7 @@ export default function ProfileCard({
               onClick={() => router.push(`/${username}`)}
               className="font-semibold text-white cursor-pointer hover:underline"
             >
-              {username}
+              {name}
             </span>
             <span className="text-gray-400">@{username}</span>
             <p>{bio}</p>

@@ -71,9 +71,10 @@ export default function FollowersPage({
         follwers.map((f: any) => (
           <ProfileCard
             key={f.id}
-            username={f?.following?.username}
-            profilePhoto={f?.following?.photo}
-            bio={f?.following?.bio}
+            name={f.following?.name}
+            username={f.following?.username}
+            profilePhoto={f.following?.photo}
+            bio={f.following?.bio}
             isFollow={userInfo.followings.some(
               (l: any) => l.followerId === f.followingId
             )}

@@ -75,6 +75,7 @@ export default function FollowingsPage({
         followings.map((f: any) => (
           <ProfileCard
             key={f.id}
+            name={f.follower.name}
             username={f.follower.username}
             profilePhoto={f.follower.photo}
             bio={f.follower.bio}

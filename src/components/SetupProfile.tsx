@@ -1,193 +1,206 @@
-import { useRef, useState } from "react";
+"use client";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar } from "@/components/ui/avatar";
 import { DialogProps } from "@radix-ui/react-dialog";
-
+import { useToast } from "./ui/use-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Textarea } from "./ui/textarea";
+import { MdAddAPhoto } from "react-icons/md";
+import { useUserInfo } from "@/hooks/user";
+import { CrossIcon, X } from "lucide-react";
+import { FaCross } from "react-icons/fa";
 export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
-  const [step, setStep] = useState(1);
   const [name, setName] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [headerPhoto, setHeaderPhoto] = useState("");
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [headerPhoto, setHeaderPhoto] = useState<string | null>(null);
   const [bio, setBio] = useState("");
   const photoRef = useRef<HTMLInputElement>(null);
   const headerPhotoRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [headerPhotoUrl, setHeaderPhotoUrl] = useState<string | null>(null);
+  const { userInfo, isLoading } = useUserInfo();
+  const { data: session, update, status } = useSession();
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFile: React.Dispatch<React.SetStateAction<string | null>>,
+    type: "photo" | "headerPhoto"
+  ) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+
+      setFile(URL.createObjectURL(file));
+
+      if (type === "photo") setPhotoUrl(URL.createObjectURL(file));
+      else setHeaderPhotoUrl(URL.createObjectURL(file));
+
+      const uploadedUrl = await uploadFileToCloudinary(file);
+      if (uploadedUrl) {
+        if (type === "photo") setPhoto(uploadedUrl);
+        else setHeaderPhoto(uploadedUrl);
+      }
+    }
+  };
+
+  const uploadFileToCloudinary = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await axios.post("/api/upload/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data.result.url;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      return null;
+    }
+  };
+
+  const setProfile = async () => {
+    try {
+      const res = await axios.post("/api/user/profile/create", {
+        name: name !== "" ? name : userInfo.name,
+        bio: bio !== "" ? bio : userInfo.bio,
+        photo: photo ?? userInfo.photo,
+        headerPhoto: headerPhoto ?? userInfo.headerPhoto,
+      });
+      await update({ name: name });
+      toast({
+        title: res.data.message || "Profile updated successfully",
+      });
+      router.refresh();
+    } catch (error: any) {
+      toast({
+        title: error?.response?.data.message || "Error updating profile",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[525px] bg-black text-white rounded-lg p-6">
-        <DialogHeader className="mb-4">
-          <DialogTitle className="text-2xl font-bold text-center">
-            {step === 5 ? "Setup Complete" : "Setup your profile"}
+      <DialogContent className="sm:max-w-[525px] max-h-[700px] bg-black text-white rounded-xl p-8 shadow-2xl">
+        <DialogHeader className="mb-3">
+          <DialogTitle className="text-3xl font-extrabold text-center text-white bg-clip-text bg-black">
+            Edit Profile
           </DialogTitle>
-          <DialogDescription className="text-center text-sm text-gray-400">
-            {step !== 5 && "Follow the steps to complete your profile setup."}
-          </DialogDescription>
         </DialogHeader>
-
-        {/* Step 1: Set Username */}
-        {step === 1 && (
-          <div className="grid gap-6 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="Name" className="text-right text-gray-300">
-                Name
-              </Label>
-              <Input
-                id="Name"
-                placeholder="Name"
-                className="col-span-3 bg-transparent rounded-lg text-white"
+        <div className="grid gap-6 py-4 text-center">
+          <div
+            onClick={() => headerPhotoRef?.current?.click()}
+            className="relative w-full h-48 cursor-pointer bg-gray-600 rounded-lg overflow-hidden shadow-inner"
+          >
+            {headerPhotoUrl || userInfo.headerPhoto ? (
+              <img
+                src={headerPhotoUrl || userInfo.headerPhoto}
+                alt="Header Photo"
+                className="h-full w-full object-cover cursor-pointer opacity-60"
+              />
+            ) : (
+              <div className="flex justify-center items-center">
+                <MdAddAPhoto size={25} />
+              </div>
+            )}
+            <div className="flex justify-evenly">
+              <MdAddAPhoto
+                size={45}
+                className="text-gray-800 absolute top-1/3 left-1/2 p-2 rounded-xl hover:bg-white/45"
+              />
+              <X
+                size={45}
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  setHeaderPhotoUrl("");
+                }}
+                className="text-red-500 absolute top-1/3 right-1/2 p-2  rounded-xl hover:bg-white/45"
               />
             </div>
-            <DialogFooter className="flex justify-end">
-              <Button
-                variant="outline"
-                onClick={nextStep}
-                className="bg-sky-500 hover:bg-sky-600 text-white hover:text-white rounded-full px-6 py-2"
-              >
-                Next
-              </Button>
-            </DialogFooter>
+            <Input
+              onChange={(e) =>
+                handleFileChange(e, setHeaderPhoto, "headerPhoto")
+              }
+              type="file"
+              ref={headerPhotoRef}
+              className="hidden"
+            />
           </div>
-        )}
-
-        {/* Step 2: Set Profile Photo */}
-        {step === 2 && (
-          <div className="grid gap-6 py-4 text-center">
-            <Label className="text-gray-300">Profile Photo</Label>
-            <div className="relative flex justify-center items-center">
-              <div onClick={() => photoRef.current?.click()} className="relative w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center mx-auto cursor-pointer">
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full">
-                  <span className="text-white text-4xl">+</span>
-                </div>
-                <Input
-                  type="file"
-                  ref={photoRef}
-                  className="hidden"
-                />
+          <div
+            onClick={() => photoRef.current?.click()}
+            className="flex justify-center relative h-32 w-32 -mt-16 rounded-full bg-gray-700 border-4 border-gray-800 shadow-lg cursor-pointer overflow-hidden"
+          >
+            {photoUrl || userInfo.photo ? (
+              <img
+                src={photoUrl || userInfo.photo}
+                alt="Profile Photo"
+                className="h-full w-full rounded-full object-cover opacity-60"
+              />
+            ) : (
+              <div className="h-full w-full font-semibold flex justify-center items-center text-5xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
+                <MdAddAPhoto size={35} />
               </div>
-            </div>
-
-            <DialogFooter className="flex justify-between mt-4">
-              <Button
-                variant="outline"
-                onClick={prevStep}
-                className="bg-gray-600 hover:bg-gray-500 text-white rounded-full px-6 py-2"
-              >
-                Back
-              </Button>
-              <Button
-                variant="outline"
-                onClick={nextStep}
-                className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-6 py-2"
-              >
-                Next
-              </Button>
-            </DialogFooter>
-          </div>
-        )}
-
-        {/* Step 3: Set Header Photo */}
-        {step === 3 && (
-          <div className="grid gap-6 py-4 text-center">
-            <Label className="text-gray-300">Header Photo</Label>
-            <div className="relative flex justify-center items-center">
-              <div onClick={() => headerPhotoRef?.current?.click()} className="relative w-[440px] h-[280px] bg-gray-700 flex items-center justify-center mx-auto cursor-pointer">
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 ">
-                  <span className="text-white text-4xl">+</span>
-                </div>
-                <Input
-                  type="file"
-                  ref={headerPhotoRef}
-                  className="hidden"
-                />
-              </div>
-            </div>
-            <Button
-              variant="outline"
-              className="bg-gray-700 hover:bg-gray-600 text-white rounded-full px-6 py-2 mb-4"
-            >
-              Upload Header Photo
-            </Button>
-            <DialogFooter className="flex justify-between">
-              <Button
-                variant="outline"
-                onClick={prevStep}
-                className="bg-gray-600 hover:bg-gray-500 text-white rounded-full px-6 py-2"
-              >
-                Back
-              </Button>
-              <Button
-                variant="outline"
-                onClick={nextStep}
-                className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-6 py-2"
-              >
-                Next
-              </Button>
-            </DialogFooter>
-          </div>
-        )}
-
-        {/* Step 4: Add Bio */}
-        {step === 4 && (
-          <div className="grid gap-6 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="bio" className="text-right text-gray-300">
-                Bio
-              </Label>
-              <Input
-                id="bio"
-                placeholder="Tell us about yourself"
-               className="col-span-3 bg-transparent rounded-lg text-white"
+            )}
+            <div>
+              <MdAddAPhoto
+                size={25}
+                className="absolute top-1/2 right-11 hover:bg-white/15"
               />
             </div>
-            <DialogFooter className="flex justify-between">
-              <Button
-                variant="outline"
-                onClick={prevStep}
-                className="bg-gray-600 hover:bg-gray-500 text-white rounded-full px-6 py-2"
-              >
-                Back
-              </Button>
-              <Button
-                variant="outline"
-                onClick={nextStep}
-                className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-6 py-2"
-              >
-                Complete
-              </Button>
-            </DialogFooter>
+            <Input
+              onChange={(e) => handleFileChange(e, setPhoto, "photo")}
+              type="file"
+              ref={photoRef}
+              className="hidden"
+            />
           </div>
-        )}
-
-        {/* Step 5: Setup Complete */}
-        {step === 5 && (
-          <div className="grid gap-6 py-4 text-center">
-            <p className="text-xl text-gray-300">
-              Your profile setup is complete!
-            </p>
-            <DialogFooter className="flex justify-center">
-              <Button
-                variant="outline"
-                onClick={() => []}
-                className="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2"
-              >
-                Done
-              </Button>
-            </DialogFooter>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
+            <Label htmlFor="name" className="text-gray-400">
+              Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="Your Name"
+              onChange={(e) => setName(e.target.value)}
+              defaultValue={userInfo.name}
+              className="bg-black rounded-lg text-white w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            />
           </div>
-        )}
+          <div className="flex flex-col  gap-4">
+            <Label htmlFor="bio" className="text-gray-400">
+              Bio
+            </Label>
+            <Textarea
+              id="bio"
+              placeholder="Tell us about yourself"
+              defaultValue={userInfo.bio}
+              onChange={(e) => setBio(e.target.value)}
+              className="bg-black rounded-lg text-white w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            />
+          </div>
+        </div>
+        <Button
+          onClick={setProfile}
+          className="w-[80px] py-2 my-2 rounded-lg bg-white text-black font-bold hover:bg-white/85 transition-all duration-200 shadow-lg"
+        >
+          Save
+        </Button>
       </DialogContent>
     </Dialog>
   );

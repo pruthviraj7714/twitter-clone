@@ -16,17 +16,36 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const commentId =  req.nextUrl.searchParams.get("commentId");
+    const commentId = req.nextUrl.searchParams.get("commentId");
 
     if (!commentId) {
-      return NextResponse.json({
-        message: "No Comment ID found!",
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          message: "No Comment ID found!",
+        },
+        { status: 400 }
+      );
     }
-    
+
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: commentId,
+        userId: Number(session.user.id),
+      },
+    });
+
+    if (!comment) {
+      return NextResponse.json(
+        {
+          message: "You are not authorized to delete this comment!",
+        },
+        { status: 400 }
+      );
+    }
+
     await prisma.comment.delete({
       where: {
-        id : commentId
+        id: commentId,
       },
     });
 

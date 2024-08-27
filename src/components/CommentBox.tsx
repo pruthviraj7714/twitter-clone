@@ -58,6 +58,7 @@ export default function CommentBox({
     } catch (error: any) {
       toast({
         title: error?.response?.data.message,
+        variant: "destructive"
       });
     }
   };

@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
+import { RWebShare } from "react-web-share";
 
 export default function PostBox({
   id,
@@ -126,6 +127,11 @@ export default function PostBox({
         variant: "destructive",
       });
     }
+  };
+
+  const handleShare = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   useEffect(() => {
@@ -282,12 +288,22 @@ export default function PostBox({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <span className="cursor-pointer transition-colors duration-150 hover:text-sky-500">
-                <Share
-                  className="hover:bg-sky-600/30 hover:rounded-full p-1"
-                  size={25}
-                />
-              </span>
+              <div onClick={handleShare}>
+                <RWebShare
+                  data={{
+                    text: "Like humans, flamingos make friends for life",
+                    url: "https://web.whatsapp.com",
+                    title: "Share with friends & family",
+                  }}
+                >
+                  <span className="cursor-pointer transition-colors duration-150 hover:text-sky-500">
+                    <Share
+                      className="hover:bg-sky-600/30 hover:rounded-full p-1"
+                      size={25}
+                    />
+                  </span>
+                </RWebShare>
+              </div>
             </TooltipTrigger>
             <TooltipContent className="bg-gray-600 text-white">
               <p>Share</p>

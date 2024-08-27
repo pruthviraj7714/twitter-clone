@@ -1,9 +1,9 @@
 import authOptions from "@/lib/auth";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -14,7 +14,15 @@ export async function GET() {
       );
     }
 
-    const users = await prisma.user.findMany({
+    const query = req.nextUrl.searchParams.get("query") || "";
+
+    let users = await prisma.user.findMany({
+      where: {
+        OR: [
+          { username: { startsWith: query } },
+          { name: { startsWith: query } },
+        ],
+      },
       select: {
         id: true,
         username: true,

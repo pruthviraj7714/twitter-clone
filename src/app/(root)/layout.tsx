@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         {/* Right Sidebar */}
-        <div className="fixed right-14 top-14 w-[330px] hidden lg:block px-4 h-full">
+        <div className="fixed right-14 top-14 w-[390px] hidden lg:block px-4 h-full">
           <RightSidebar />
         </div>
       </div>

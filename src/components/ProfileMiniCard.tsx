@@ -34,7 +34,7 @@ export default function ProfileMiniCard({
   };
 
   return (
-    <div className="flex justify-between items-center w-full p-2 border-b border-white/15 hover:bg-white/5 px-2">
+    <div className="flex justify-between items-center w-full p-4 hover:bg-white/5 ">
       <div className="flex justify-start items-center gap-1.5">
         <div
           onClick={() => {
@@ -46,7 +46,7 @@ export default function ProfileMiniCard({
             <img
               src={photo}
               alt="Profile Photo"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           ) : (
             <div className="flex justify-center items-center h-full w-full border border-white/15">

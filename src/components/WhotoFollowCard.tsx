@@ -51,6 +51,7 @@ export default function WhotoFollowCard() {
                   (u: any) => u.followingId === Number(session?.user.id)
                 )
             )
+            .slice(0, 7)
             .map((user) => (
               <ProfileMiniCard
                 key={user.id}
@@ -64,7 +65,9 @@ export default function WhotoFollowCard() {
             ))}
         </div>
       ) : (
-        <div className="flex justify-center font-bold mt-5 text-white">No Users Found</div>
+        <div className="flex justify-center font-bold mt-5 text-white">
+          No Users Found
+        </div>
       )}
     </div>
   );

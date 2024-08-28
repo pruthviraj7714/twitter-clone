@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,8 +17,7 @@ import { useSession } from "next-auth/react";
 import { Textarea } from "./ui/textarea";
 import { MdAddAPhoto } from "react-icons/md";
 import { useUserInfo } from "@/hooks/user";
-import { CrossIcon, X } from "lucide-react";
-import { FaCross } from "react-icons/fa";
+
 export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState<string | null>(null);
@@ -50,8 +49,13 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
 
       const uploadedUrl = await uploadFileToCloudinary(file);
       if (uploadedUrl) {
-        if (type === "photo") setPhoto(uploadedUrl);
-        else setHeaderPhoto(uploadedUrl);
+        if (type === "photo") {
+          setPhotoUrl(uploadedUrl);
+          setPhoto(uploadedUrl);
+        } else if (type === "headerPhoto") {
+          setHeaderPhotoUrl(uploadedUrl);
+          setHeaderPhoto(uploadedUrl);
+        }
       }
     }
   };
@@ -106,29 +110,17 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
             onClick={() => headerPhotoRef?.current?.click()}
             className="relative w-full h-48 cursor-pointer bg-gray-600 rounded-lg overflow-hidden shadow-inner"
           >
-            {headerPhotoUrl || userInfo.headerPhoto ? (
+            {(headerPhotoUrl || userInfo.headerPhoto) && (
               <img
                 src={headerPhotoUrl || userInfo.headerPhoto}
                 alt="Header Photo"
                 className="h-full w-full object-cover cursor-pointer opacity-60"
               />
-            ) : (
-              <div className="flex justify-center items-center">
-                <MdAddAPhoto size={25} />
-              </div>
             )}
             <div className="flex justify-evenly">
               <MdAddAPhoto
                 size={45}
-                className="text-gray-800 absolute top-1/3 left-1/2 p-2 rounded-xl hover:bg-white/45"
-              />
-              <X
-                size={45}
-                onClick={(e: any) => {
-                  e.stopPropagation();
-                  setHeaderPhotoUrl("");
-                }}
-                className="text-red-500 absolute top-1/3 right-1/2 p-2  rounded-xl hover:bg-white/45"
+                className="text-white absolute top-1/3 p-2 rounded-full bg-gray-800 shadow-lg"
               />
             </div>
             <Input
@@ -144,21 +136,17 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
             onClick={() => photoRef.current?.click()}
             className="flex justify-center relative h-32 w-32 -mt-16 rounded-full bg-gray-700 border-4 border-gray-800 shadow-lg cursor-pointer overflow-hidden"
           >
-            {photoUrl || userInfo.photo ? (
+            {(photoUrl || userInfo.photo) && (
               <img
                 src={photoUrl || userInfo.photo}
                 alt="Profile Photo"
                 className="h-full w-full rounded-full object-cover opacity-60"
               />
-            ) : (
-              <div className="h-full w-full font-semibold flex justify-center items-center text-5xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
-                <MdAddAPhoto size={35} />
-              </div>
             )}
             <div>
               <MdAddAPhoto
                 size={25}
-                className="absolute top-1/2 right-11 hover:bg-white/15"
+                className="absolute top-14 left-11 hover:bg-white/15"
               />
             </div>
             <Input

@@ -41,7 +41,7 @@ export default function Bookmarkpage() {
   }
 
   return (
-    <div className="flex flex-col border-l border-r p-2 border-white/15 bg-black text-white">
+    <div className="flex flex-col border-l border-r p-2 border-white/15 bg-black min-h-screen text-white">
       <div className="h-16 bg-black flex justify-start items-center">
         <div className="flex items-center">
           <ArrowLeft

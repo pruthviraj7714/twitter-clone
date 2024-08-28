@@ -14,11 +14,13 @@ import {
   GoHomeFill,
 } from "react-icons/go";
 import { FaRegUser, FaSearch, FaUser } from "react-icons/fa";
+import TweetDialog from "./TweetDialog";
 
 const Sidebar = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState<string>("home");
+  const [postDialogOpen, setPostDialogOpen] = useState(false);
 
   return (
     <div className="max-h-screen w-[275px] p-4 mr-8">
@@ -80,9 +82,10 @@ const Sidebar = () => {
             }}
             Icon={FaRegUser}
           />
-          <div className="text-white flex justify-center items-center bg-sky-500 text-center rounded-full font-semibold px-8 py-3 mt-4 cursor-pointer hover:bg-sky-400">
+          <div onClick={() => {setPostDialogOpen(!postDialogOpen)}} className="text-white flex justify-center items-center bg-sky-500 text-center rounded-full font-semibold px-8 py-3 mt-4 cursor-pointer hover:bg-sky-400">
             Post
           </div>
+          
           <div
             onClick={async () => {
               await signOut({ redirect: false });
@@ -94,6 +97,7 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+      {postDialogOpen && <TweetDialog open={postDialogOpen} onOpenChange={setPostDialogOpen} />}
     </div>
   );
 };

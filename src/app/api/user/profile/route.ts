@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
         bio: true,
         likes: true,
         bookmarks: true,
-        comments: true,
+        comments : true,
         photo: true,
       },
     });

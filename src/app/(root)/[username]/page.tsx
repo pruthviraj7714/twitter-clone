@@ -162,6 +162,7 @@ export default function ProfilePage({
         posts={userInfo.posts}
         likes={userInfo.likes}
         bookmarks={userInfo.bookmarks}
+        comments={userInfo.comments}
       />
     </div>
   );

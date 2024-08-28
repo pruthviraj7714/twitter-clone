@@ -88,6 +88,9 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
       toast({
         title: res.data.message || "Profile updated successfully",
       });
+      if(onOpenChange) {
+        onOpenChange(false)
+      }
       router.refresh();
     } catch (error: any) {
       toast({

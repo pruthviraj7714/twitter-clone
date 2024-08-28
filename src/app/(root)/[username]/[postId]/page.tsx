@@ -231,7 +231,7 @@ export default function PostPage({
             className="ml-1.5 cursor-pointer"
             size={20}
             onClick={() => {
-              router.push("/home");
+              router.back()
             }}
           />
         </div>
@@ -274,7 +274,7 @@ export default function PostPage({
               <img
                 src={postInfo.image}
                 alt="Post Image"
-                className="w-full h-auto rounded-xl object-cover shadow-md"
+                className="w-full h-auto rounded-2xl border border-white/15 p-1 object-cover shadow-md"
               />
             </div>
           )}

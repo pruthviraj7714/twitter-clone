@@ -1,5 +1,5 @@
 "use client";
-import { Bookmark, Dot, Ellipsis, Reply, Share, Trash2 } from "lucide-react";
+import {  Dot, Ellipsis, Share, Trash2 } from "lucide-react";
 import {
   FaBookmark,
   FaHeart,
@@ -66,7 +66,6 @@ export default function PostBox({
     try {
       const res = await axios.get(`/api/post/info?postId=${id}`);
       setPostInfo(res.data.post);
-      console.log(res.data);
 
       setIsLiked(
         res.data.post.likes?.some(

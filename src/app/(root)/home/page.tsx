@@ -44,7 +44,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-black">
+      <div className="min-h-screen flex justify-center items-center border-l border-r border-white/15 bg-black">
         <div className="w-16 h-16 border-4 border-sky-400 border-t-transparent border-t-4 rounded-full animate-spin"></div>
       </div>
     );

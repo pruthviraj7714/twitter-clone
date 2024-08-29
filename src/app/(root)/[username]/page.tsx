@@ -20,7 +20,7 @@ export default function ProfilePage({
   const [loading, setLoading] = useState(true);
   const [isFollow, setIsFollow] = useState<boolean>(false);
   const { toast } = useToast();
-  const {data : session, status} = useSession();
+  const { data: session, status } = useSession();
   const username = params.username;
   const [openProfileDialog, setOpenProfileDialog] = useState<boolean>(false);
   const router = useRouter();
@@ -29,7 +29,9 @@ export default function ProfilePage({
       const res = await axios.get(`/api/user/profile?username=${username}`);
       setUserInfo(res.data);
       setIsFollow(
-        res.data.followers.some((l: any) => l.followingId === Number(session?.user.id))
+        res.data.followers.some(
+          (l: any) => l.followingId === Number(session?.user.id)
+        )
       );
     } catch (error: any) {
       toast({
@@ -110,13 +112,18 @@ export default function ProfilePage({
           )}
         </div>
         {session?.user.username === username ? (
-          <Button onClick={() => setOpenProfileDialog(true)} className="rounded-full bg-transparent border border-gray-500 font-bold mt-2">
+          <Button
+            onClick={() => setOpenProfileDialog(true)}
+            className="rounded-full bg-transparent border border-gray-500 font-bold mt-2"
+          >
             Edit Profile
           </Button>
         ) : (
           <div onClick={handleFollow}>
             {isFollow ? (
-              <Button className="rounded-full bg-black text-white font-semibold mt-2 hover:bg-white/10 border border-white/15 ">Following</Button>
+              <Button className="rounded-full bg-black text-white font-semibold mt-2 hover:bg-white/10 border border-white/15 ">
+                Following
+              </Button>
             ) : (
               <Button className="rounded-full bg-white text-black font-semibold mt-2 hover:bg-white/85">
                 Follow
@@ -125,7 +132,12 @@ export default function ProfilePage({
           </div>
         )}
       </div>
-      {openProfileDialog && <ProfileSetupDialog open={openProfileDialog} onOpenChange={setOpenProfileDialog} />}
+      {openProfileDialog && (
+        <ProfileSetupDialog
+          open={openProfileDialog}
+          onOpenChange={setOpenProfileDialog}
+        />
+      )}
       <div className="flex flex-col justify-start p-4">
         <div>
           <h1 className="text-xl font-bold">{userInfo.name}</h1>

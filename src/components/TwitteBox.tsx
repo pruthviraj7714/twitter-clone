@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import EmojiPicker, { Theme } from "emoji-picker-react";
 
 export default function Twitte({
   username,
@@ -51,7 +52,7 @@ export default function Twitte({
       const file = e.target.files[0];
       setFileType(file.type.startsWith("video") ? "video" : "image");
       setSelectedFile(file);
-      setMediaUrl(URL.createObjectURL(file)); 
+      setMediaUrl(URL.createObjectURL(file));
     }
   };
 
@@ -167,6 +168,15 @@ export default function Twitte({
             className="cursor-pointer hover:text-sky-500"
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
           />
+          {showEmojiPicker && (
+            <div className="absolute top-10">
+              <EmojiPicker
+                className="z-20"
+                theme={Theme.DARK}
+                onEmojiClick={addEmoji}
+              />
+            </div>
+          )}
         </div>
         <div className="flex gap-2 items-center">
           {text.length >= maxLength ? (
@@ -217,13 +227,6 @@ export default function Twitte({
           )}
         </div>
       )}
-
-      {/* Emoji picker component */}
-      {/* {showEmojiPicker && (
-        <div className="absolute">
-          < data={data} onEmojiSelect={addEmoji} />
-        </div>
-      )} */}
     </div>
   );
 }

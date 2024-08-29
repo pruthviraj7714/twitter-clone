@@ -1,8 +1,5 @@
 import { DialogProps } from "@radix-ui/react-dialog";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useUserInfo } from "@/hooks/user";
 import { ImageIcon, SmileIcon, XIcon } from "lucide-react";
 import { Button } from "./ui/button";
@@ -10,6 +7,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 
 export default function TweetDialog({ open, onOpenChange }: DialogProps) {
   const [text, setText] = useState("");
@@ -25,7 +23,7 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
 
   const { toast } = useToast();
 
-  const addEmoji = (emojiObject: any) => {
+  const addEmoji = (emojiObject: EmojiClickData) => {
     setText((prevText) => prevText + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
@@ -81,8 +79,8 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
         setFileType(null);
         setMediaUrl(null);
         if (textareaRef.current) textareaRef.current.style.height = "auto";
-        if(onOpenChange){
-            onOpenChange(false)
+        if (onOpenChange) {
+          onOpenChange(false);
         }
         router.refresh();
       } else {
@@ -179,6 +177,11 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
                 className="cursor-pointer hover:text-sky-500"
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
               />
+              {showEmojiPicker && (
+                <div className="absolute top-10">
+                  <EmojiPicker className="z-20" theme={Theme.DARK} onEmojiClick={addEmoji} />
+                </div>
+              )}
             </div>
             <div className="flex gap-2 items-center">
               {text.length >= maxLength ? (
@@ -229,13 +232,6 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
               )}
             </div>
           )}
-
-          {/* Emoji picker component */}
-          {/* {showEmojiPicker && (
-        <div className="absolute">
-          < data={data} onEmojiSelect={addEmoji} />
-        </div>
-      )} */}
         </div>
       </DialogContent>
     </Dialog>

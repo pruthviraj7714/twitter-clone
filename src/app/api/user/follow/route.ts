@@ -59,6 +59,13 @@ export async function POST(req: NextRequest) {
           followingId: Number(session.user.id),
         },
       });
+      await prisma.notification.create({
+        data : {
+          userId : user2.id,
+          type : "FOLLOW",
+          followerId : Number(session.user.id)
+        }
+      })
       return NextResponse.json(
         { message: "User Successfully Following Other User" },
         { status: 200 }

@@ -44,6 +44,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (!post) {
+      return NextResponse.json(
+        {
+          message: "Post not found!",
+        },
+        { status: 400 }
+      );
+    }
+
     const existingLike = await prisma.like.findFirst({
       where: {
         userId,
@@ -72,6 +87,14 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      await prisma.notification.create({
+        data: {
+          userId: Number(post.userId),
+          likerId: Number(session.user.id),
+          postId,
+          type: "LIKE",
+        },
+      });
       return NextResponse.json(
         {
           message: "Post liked successfully!",

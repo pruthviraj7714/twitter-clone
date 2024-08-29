@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
-        message: "User updated successfully!",
+        message: "Profile updated successfully!",
         user: updatedUser,
       },
       { status: 200 }

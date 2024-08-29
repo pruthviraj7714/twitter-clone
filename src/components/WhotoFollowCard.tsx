@@ -15,7 +15,6 @@ export default function WhotoFollowCard() {
     try {
       const res = await axios.get("/api/user/all");
       setUsers(res.data.users);
-      console.log(res.data);
     } catch (error: any) {
       toast({
         title: error.response.data.message,

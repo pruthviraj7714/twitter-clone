@@ -42,6 +42,18 @@ export async function GET(req: NextRequest) {
         },
         comments: true,
         photo: true,
+        notificationsAsUser : {
+          orderBy : {
+            createdAt : "desc"
+          },
+          include : {
+            follower : true,
+            post : true,
+            liker : true,
+            replier : true,
+            comment : true
+          }
+        },
       },
     });
 

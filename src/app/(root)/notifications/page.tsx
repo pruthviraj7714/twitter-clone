@@ -1,6 +1,5 @@
 "use client";
 import NotificationBox from "@/components/NotificationBox";
-import { useToast } from "@/components/ui/use-toast";
 import { useUserInfo } from "@/hooks/user";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -10,12 +9,10 @@ export default function NotificationPage() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const { isLoading, userInfo } = useUserInfo();
   const router = useRouter();
-  
 
   useEffect(() => {
     if (userInfo) {
       setNotifications(userInfo.notificationsAsUser);
-      console.log(userInfo);
     }
   }, [isLoading]);
 
@@ -41,7 +38,12 @@ export default function NotificationPage() {
       </div>
       {notifications &&
         notifications.map((notification) => (
-          <NotificationBox key={notification.id} username={userInfo.username} name={userInfo.name} {...notification} />
+          <NotificationBox
+            key={notification.id}
+            username={userInfo.username}
+            name={userInfo.name}
+            {...notification}
+          />
         ))}
     </div>
   );

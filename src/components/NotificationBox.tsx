@@ -1,8 +1,11 @@
+import axios from "axios";
 import { format } from "date-fns";
 import { Dot, User2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { userInfo } from "os";
 import { FaHeart, FaUser } from "react-icons/fa";
+import { useToast } from "./ui/use-toast";
+import { useEffect } from "react";
 
 export default function NotificationBox({
   id,
@@ -18,7 +21,7 @@ export default function NotificationBox({
   postId,
   user,
   read,
-  username
+  username,
 }: {
   id: number;
   type: "FOLLOW" | "LIKE" | "REPLY";
@@ -30,12 +33,13 @@ export default function NotificationBox({
   replier: any;
   likerId: number;
   postId: string;
-  comment : any;
+  comment: any;
   read: boolean;
-  name : string;
-  username : string;
+  name: string;
+  username: string;
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const now = new Date();
   const createdAt = comment?.createdAt || now;
   const seconds = Math.floor(
@@ -56,8 +60,28 @@ export default function NotificationBox({
   } else {
     relativeTime = format(new Date(createdAt), "yyyy");
   }
+
+  const notificationRead = async (id: number) => {
+    try {
+      await axios.post(`/api/notification/read?id=${id}`, {});
+    } catch (error: any) {
+      toast({
+        title: error.reponse.data.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    notificationRead(id);
+  });
+
   return (
-    <div className="border-b border-white/15 hover:bg-white/5 py-3">
+    <div
+      className={`border-b border-white/15 hover:bg-white/5 py-3 ${
+        read ? "" : "bg-sky-950 hover:bg-sky-900"
+      }`}
+    >
       {type === "FOLLOW" && (
         <div className="flex justify-start gap-2.5 items-center px-6">
           <div className="mb-10">
@@ -86,15 +110,21 @@ export default function NotificationBox({
         </div>
       )}
       {type === "LIKE" && (
-        <div onClick={() => router.push(`/${username}/${postId}`)} className="flex items-start gap-2.5 px-6 cursor-pointer">
+        <div
+          onClick={() => router.push(`/${username}/${postId}`)}
+          className="flex items-start gap-2.5 px-6 cursor-pointer"
+        >
           <div className="mt-6">
             <FaHeart size={27} className="text-pink-500" />
           </div>
           <div className="flex flex-col justify-center cursor-pointer">
-            <div onClick={(e:any) => {
+            <div
+              onClick={(e: any) => {
                 e.stopPropagation();
-                  router.push(`/${liker.username}`);
-                }} className="h-10 w-10 mt-4">
+                router.push(`/${liker.username}`);
+              }}
+              className="h-10 w-10 mt-4"
+            >
               {liker.photo ? (
                 <img
                   src={liker.photo}
@@ -110,8 +140,8 @@ export default function NotificationBox({
             <div className="mt-1">
               <span
                 className="font-bold cursor-pointer hover:underline"
-                onClick={(e:any) => {
-                    e.stopPropagation();
+                onClick={(e: any) => {
+                  e.stopPropagation();
                   router.push(`/${liker.username}`);
                 }}
               >
@@ -126,7 +156,10 @@ export default function NotificationBox({
         </div>
       )}
       {type === "REPLY" && (
-        <div onClick={() => router.push(`/${username}/${comment.postId}`)} className="flex justify-between mb-1 px-5 cursor-pointer">
+        <div
+          onClick={() => router.push(`/${username}/${comment.postId}`)}
+          className="flex justify-between mb-1 px-5 cursor-pointer"
+        >
           <div
             className="w-10 h-10 rounded-full bg-gray-600 mr-4 overflow-hidden cursor-pointer"
             onClick={(e: any) => {
@@ -164,13 +197,18 @@ export default function NotificationBox({
               <span className="text-gray-400 text-sm">{relativeTime}</span>
             </div>
             <div className="mb-3  text-white/55 text-sm">
-              Replying to <span onClick={(e:any) => {
-                e.stopPropagation()
-                router.push(`/${username}`)}} className="text-sky-500 cursor-pointer hover:underline">@{username}</span>
+              Replying to{" "}
+              <span
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  router.push(`/${username}`);
+                }}
+                className="text-sky-500 cursor-pointer hover:underline"
+              >
+                @{username}
+              </span>
             </div>
-            <div>
-                {comment.text}
-            </div>
+            <div>{comment.text}</div>
           </div>
         </div>
       )}

@@ -74,12 +74,12 @@ export default function NotificationBox({
 
   useEffect(() => {
     notificationRead(id);
-  });
+  }, []);
 
   return (
     <div
-      className={`border-b border-white/15 hover:bg-white/5 py-3 ${
-        read ? "" : "bg-sky-950 hover:bg-sky-900"
+      className={`border-b border-white/15  py-3 ${
+        read ? "hover:bg-white/5" : "bg-sky-950 hover:bg-sky-900"
       }`}
     >
       {type === "FOLLOW" && (
@@ -150,7 +150,7 @@ export default function NotificationBox({
               liked your post
             </div>
             <div className="mt-1.5 text-white/55 overflow-y-auto">
-              {post.text}
+              {post?.text}
             </div>
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function NotificationBox({
                 @{username}
               </span>
             </div>
-            <div>{comment.text}</div>
+            <div>{comment?.text}</div>
           </div>
         </div>
       )}

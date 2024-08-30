@@ -139,7 +139,7 @@ export default function PostBox({
 
   if (loading) {
     return (
-      <div className="p-4 border-b border-gray-700 animate-pulse">
+      <div className="p-4 w-full border-b border-gray-700 animate-pulse">
         <div className="flex items-start mb-4">
           <div className="w-12 h-12 rounded-full bg-gray-600 mr-4"></div>
           <div className="flex-1 space-y-3">
@@ -149,8 +149,6 @@ export default function PostBox({
         </div>
         <div className="h-6 bg-gray-600 rounded mb-2"></div>
         <div className="h-6 bg-gray-600 rounded mb-2"></div>
-        <div className="h-6 bg-gray-600 rounded mb-2"></div>
-        <div className="h-40 bg-gray-700 rounded"></div>
       </div>
     );
   }

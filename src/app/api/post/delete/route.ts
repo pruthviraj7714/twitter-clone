@@ -84,17 +84,18 @@ export async function DELETE(req: NextRequest) {
       }
     })
     
+    await prisma.notification.deleteMany({
+      where : {
+        postId
+      }
+    })
+    
     await prisma.post.delete({
       where: {
         id: postId,
       },
     });
 
-    await prisma.notification.deleteMany({
-      where : {
-        postId
-      }
-    })
 
     return NextResponse.json(
       {

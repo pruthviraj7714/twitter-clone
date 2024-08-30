@@ -90,6 +90,11 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
+    await prisma.notification.deleteMany({
+      where : {
+        postId
+      }
+    })
 
     return NextResponse.json(
       {

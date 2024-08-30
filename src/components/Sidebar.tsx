@@ -13,6 +13,17 @@ import {
   GoHome,
   GoHomeFill,
 } from "react-icons/go";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { FaRegUser, FaSearch, FaUser } from "react-icons/fa";
 import TweetDialog from "./TweetDialog";
 import { useUserInfo } from "@/hooks/user";
@@ -109,15 +120,34 @@ const Sidebar = () => {
             Post
           </div>
 
-          <div
-            onClick={async () => {
-              await signOut({ redirect: false });
-              router.push("/");
-            }}
-            className="text-white flex justify-center items-center bg-sky-500 text-center rounded-full font-semibold px-8 py-3 mt-4 cursor-pointer hover:bg-sky-400"
-          >
-            Logout
-          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <div className="text-white flex justify-center items-center bg-sky-500 text-center rounded-full font-semibold px-8 py-3 mt-4 cursor-pointer hover:bg-sky-400">
+                Logout
+              </div>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-black text-red-500">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirm Logout</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to log out? You will need to sign in
+                  again to access your account.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="bg-sky-500 text-white hover:bg-sky-600 hover:text-white">Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                className="bg-red-500 text-white hover:bg-red-600"
+                  onClick={async () => {
+                    await signOut({ redirect: false });
+                    router.push("/");
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
       {postDialogOpen && (

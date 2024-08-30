@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { DialogProps } from "@radix-ui/react-dialog";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
@@ -19,6 +20,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
   const { toast } = useToast();
 
   const handleSignup = async () => {
@@ -33,6 +35,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
         title : res.data.message,
         description : "Now Sign in with your credentials"
       })
+      router.refresh();
     } catch (error: any) {
       toast({
         title: error.response.data.message,

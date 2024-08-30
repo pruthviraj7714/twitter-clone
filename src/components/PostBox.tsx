@@ -292,7 +292,7 @@ export default function PostBox({
                 <RWebShare
                   data={{
                     text: "Like humans, flamingos make friends for life",
-                    url: "https://web.whatsapp.com",
+                    url: `${window.location.protocol}/${username}/${id}`,
                     title: "Share with friends & family",
                   }}
                 >

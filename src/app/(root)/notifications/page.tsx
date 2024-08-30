@@ -17,7 +17,11 @@ export default function NotificationPage() {
   }, [isLoading]);
 
   if (isLoading) {
-    return <div>Loading....</div>;
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-black">
+        <div className="w-16 h-16 border-4 border-sky-400 border-t-transparent border-t-4 rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
@@ -36,7 +40,7 @@ export default function NotificationPage() {
           <h1 className="text-lg font-bold text-left">Notifications</h1>
         </div>
       </div>
-      {notifications &&
+      {notifications && notifications.length > 0 ? (
         notifications.map((notification) => (
           <NotificationBox
             key={notification.id}
@@ -44,7 +48,12 @@ export default function NotificationPage() {
             name={userInfo.name}
             {...notification}
           />
-        ))}
+        ))
+      ) : (
+        <div className="h-screen flex justify-center items-center text-lg font-semibold">
+          No notifications yet
+        </div>
+      )}
     </div>
   );
 }

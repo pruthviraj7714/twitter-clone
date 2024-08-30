@@ -151,6 +151,19 @@ export default function PostPage({
     }
   };
 
+  const handleDeletePost = async (e: any) => {
+    e.stopPropagation();
+    try {
+      await axios.delete(`/api/post/delete?postId=${params.postId}`);
+      router.push('/home')
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     getPostInfo();
     if (!isLoading && userInfo) {
@@ -298,7 +311,7 @@ export default function PostPage({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
             <div
-              onClick={() => {}}
+              onClick={handleDeletePost}
               className="bg-black hover:bg-white/5 cursor-pointer text-white text-md p-2"
             >
               <div className="flex gap-1.5 font-semibold text-red-500 ">
@@ -361,7 +374,7 @@ export default function PostPage({
                 <RWebShare
                   data={{
                     text: "Like humans, flamingos make friends for life",
-                    url: "https://web.whatsapp.com",
+                    url: window.location.href,
                     title: "Share with friends & family",
                   }}
                 >

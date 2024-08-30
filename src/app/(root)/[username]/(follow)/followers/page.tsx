@@ -42,7 +42,7 @@ export default function FollowersPage({
 
   if (loading || isLoading || status === "loading") {
     return (
-      <>
+      <div className="flex flex-col w-full border-l border-r border-white/15 min-h-screen">
         {new Array(4).fill(null).map((_, index) => (
           <div
             key={index}
@@ -61,7 +61,7 @@ export default function FollowersPage({
             </div>
           </div>
         ))}
-      </>
+      </div>
     );
   }
 

@@ -13,6 +13,7 @@ export default function ExplorePage() {
   const [query, setQuery] = useState("");
   const { data: session, status } = useSession();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
   const getAllUsers = async () => {
     try {
       const res = await axios.get(`/api/user/all?query=${query}`);
@@ -23,6 +24,8 @@ export default function ExplorePage() {
         title: error.response.data.message,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,6 +39,14 @@ export default function ExplorePage() {
       );
     }
   }, [status, query]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-black">
+        <div className="w-16 h-16 border-4 border-sky-400 border-t-transparent border-t-4 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="border-l border-r p-2 border-white/15 bg-black text-white flex flex-col min-h-screen">
@@ -65,7 +76,9 @@ export default function ExplorePage() {
           ))}
         </div>
       ) : (
-        <div className="flex justify-center items-center mt-10 text-lg font-semibold">No User found</div>
+        <div className="flex justify-center items-center mt-10 text-lg font-semibold">
+          No User found
+        </div>
       )}
     </div>
   );

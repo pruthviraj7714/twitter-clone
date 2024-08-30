@@ -303,24 +303,26 @@ export default function PostPage({
             {format(new Date(postInfo?.createdAt), "h:mm a · MMM d, yyyy")}
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex justify-center items-center text-gray-600 cursor-pointer hover:text-sky-600 hover:bg-sky-600/20 p-1 w-8 h-8 rounded-full">
-              <Ellipsis size={20} />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
-            <div
-              onClick={handleDeletePost}
-              className="bg-black hover:bg-white/5 cursor-pointer text-white text-md p-2"
-            >
-              <div className="flex gap-1.5 font-semibold text-red-500 ">
-                <Trash2 size={20} />
-                <span>Delete</span>
+        {session?.user.username === username && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex justify-center items-center text-gray-600 cursor-pointer hover:text-sky-600 hover:bg-sky-600/20 p-1 w-8 h-8 rounded-full">
+                <Ellipsis size={20} />
               </div>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
+              <div
+                onClick={handleDeletePost}
+                className=" cursor-pointer text-white text-md p-2"
+              >
+                <div className="flex gap-1.5 font-semibold text-red-500 ">
+                  <Trash2 size={20} />
+                  <span>Delete</span>
+                </div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <div className="border border-white/15 w-full" />
       <div className="flex justify-between items-center px-2 my-2 text-gray-400">

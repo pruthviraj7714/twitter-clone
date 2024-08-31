@@ -107,7 +107,7 @@ const SignInDialog = ({ open, onOpenChange }: DialogProps) => {
             />
           </div>
           <div className="flex text-sm gap-1.5 text-gray-400 mt-2">
-            <span>Don't have an account?</span>
+            <span>Don&apos;t have an account?</span>
             <span
               onClick={() => setIsCreateAccountDialogOpen(true)}
               className="text-blue-600 underline cursor-pointer"

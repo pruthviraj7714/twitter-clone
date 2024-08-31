@@ -78,7 +78,7 @@ export default function ProfileTabs({
             </div>
           ) : (
             <div className="font-bold mt-10">
-              @{username} haven't replied to any posts yet.
+              @{username} haven&apos;t replied to any posts yet.
             </div>
           )}
         </div>
@@ -95,7 +95,7 @@ export default function ProfileTabs({
             </div>
           ) : (
             <div className="font-bold mt-10">
-              @{username} haven't liked any posts yet.
+              @{username} haven&apos;t liked any posts yet.
             </div>
           )}
         </div>

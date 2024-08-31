@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SignInDialog from "@/components/SignInDialog";
 import CreateAccountDialog from "@/components/CreateAccountDialog";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const [isCreateAccountDialogOpen, setIsCreateAccountDialogOpen] =
     useState<boolean>(false);
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
+  const {data : session, status} = useSession();
   const router = useRouter();
 
   useEffect(() => {

@@ -1,9 +1,6 @@
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
-  /**
-   * Returned by `getServerSession` and `useSession` (client-side)
-   */
   interface Session {
     user: {
       id: string;
@@ -13,9 +10,6 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 
-  /**
-   * User model in the database
-   */
   interface User extends DefaultUser {
     id: string;
     username : string

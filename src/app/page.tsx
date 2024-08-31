@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import SignInDialog from "@/components/SignInDialog";
 import CreateAccountDialog from "@/components/CreateAccountDialog";
@@ -11,7 +10,6 @@ export default function Home() {
   const [isCreateAccountDialogOpen, setIsCreateAccountDialogOpen] =
     useState<boolean>(false);
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
-  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {

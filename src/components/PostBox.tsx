@@ -1,5 +1,5 @@
 "use client";
-import {  Dot, Ellipsis, Share, Trash2 } from "lucide-react";
+import { Dot, Ellipsis, Share, Trash2 } from "lucide-react";
 import {
   FaBookmark,
   FaHeart,
@@ -34,7 +34,7 @@ export default function PostBox({
   bookmarks: any[];
 }) {
   const router = useRouter();
-  const session = useSession();
+  const { data: session, status } = useSession();
   const [postInfo, setPostInfo] = useState<any>({});
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [bookmarked, setBookmarked] = useState<boolean>(false);
@@ -69,7 +69,7 @@ export default function PostBox({
 
       setIsLiked(
         res.data.post.likes?.some(
-          (l: any) => l.userId === Number(session.data?.user?.id)
+          (l: any) => l.userId === Number(session?.user.id)
         )
       );
       setBookmarked(bookmarks.some((l: any) => l.postId === id));
@@ -137,7 +137,7 @@ export default function PostBox({
     getPostInfo();
   }, [isLiked]);
 
-  if (loading) {
+  if (loading || status === "loading") {
     return (
       <div className="p-4 w-full border-b border-gray-700 animate-pulse">
         <div className="flex items-start mb-4">
@@ -221,24 +221,26 @@ export default function PostBox({
             </div>
           )}
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex justify-center items-center text-gray-600 cursor-pointer hover:text-sky-600 hover:bg-sky-600/20 p-1 w-8 h-8 rounded-full">
-              <Ellipsis size={20} />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
-            <div
-              onClick={handleDeletePost}
-              className="bg-black hover:bg-white/5 cursor-pointer text-white text-md p-2"
-            >
-              <div className="flex gap-1.5 font-semibold text-red-500 ">
-                <Trash2 size={20} />
-                <span>Delete</span>
+        {Number(session?.user?.id) === postInfo.userId && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex justify-center items-center text-gray-600 cursor-pointer hover:text-sky-600 hover:bg-sky-600/20 p-1 w-8 h-8 rounded-full">
+                <Ellipsis size={20} />
               </div>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-gray-950">
+              <div
+                onClick={handleDeletePost}
+                className=" cursor-pointer text-white text-md p-2"
+              >
+                <div className="flex gap-1.5 font-semibold text-red-500 ">
+                  <Trash2 size={20} />
+                  <span>Delete</span>
+                </div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       <div className="flex justify-between items-center px-2 text-gray-400">

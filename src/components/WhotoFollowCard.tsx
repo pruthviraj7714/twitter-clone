@@ -50,7 +50,7 @@ export default function WhotoFollowCard() {
                   (u: any) => u.followingId === Number(session?.user.id)
                 )
             )
-            .slice(0, 7)
+            .slice(0, 5)
             .map((user) => (
               <ProfileMiniCard
                 key={user.id}

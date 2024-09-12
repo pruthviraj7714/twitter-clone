@@ -22,7 +22,7 @@ model User {
   bio                     String?
   headerPhoto             String?
   photo                   String?
-  posts                   Post[]
+  posts                   Post[]        @relation()
   likes                   Like[]
   followers               Follow[]       @relation("UserFollowers")
   followings              Follow[]       @relation("UserFollowings")

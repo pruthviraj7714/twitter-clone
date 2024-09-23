@@ -50,15 +50,17 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    await prisma.notification.create({
-      data: {
-        userId: Number(post.userId),
-        replierId: Number(session.user.id),
-        commentId : comment.id,
-        postId,
-        type: "REPLY",
-      },
-    });
+    if (Number(session.user.id) !== post.userId) {
+      await prisma.notification.create({
+        data: {
+          userId: Number(post.userId),
+          replierId: Number(session.user.id),
+          commentId: comment.id,
+          postId,
+          type: "REPLY",
+        },
+      });
+    }
 
     return NextResponse.json(
       {

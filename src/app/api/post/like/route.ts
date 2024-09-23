@@ -87,14 +87,17 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      await prisma.notification.create({
-        data: {
-          userId: Number(post.userId),
-          likerId: Number(session.user.id),
-          postId,
-          type: "LIKE",
-        },
-      });
+      if(Number(session.user.id) !== post.userId) {
+        await prisma.notification.create({
+          data: {
+            userId: Number(post.userId),
+            likerId: Number(session.user.id),
+            postId,
+            type: "LIKE",
+          },
+        });
+      }
+
       return NextResponse.json(
         {
           message: "Post liked successfully!",

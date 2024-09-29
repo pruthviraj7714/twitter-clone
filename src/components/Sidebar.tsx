@@ -1,5 +1,5 @@
 "use client";
-import { Search } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -47,7 +47,7 @@ const Sidebar = () => {
 
   return (
     <div className="max-h-screen w-[275px] p-4 mr-8">
-      <div className="flex flex-col justify-center items-start">
+      <div className="hidden lg:flex flex-col justify-center items-start">
         <div>
           <Image
             src={"/logo.jpg"}
@@ -135,9 +135,11 @@ const Sidebar = () => {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel className="bg-sky-500 text-white hover:bg-sky-600 hover:text-white">Cancel</AlertDialogCancel>
+                <AlertDialogCancel className="bg-sky-500 text-white hover:bg-sky-600 hover:text-white">
+                  Cancel
+                </AlertDialogCancel>
                 <AlertDialogAction
-                className="bg-red-500 text-white hover:bg-red-600"
+                  className="bg-red-500 text-white hover:bg-red-600"
                   onClick={async () => {
                     await signOut({ redirect: false });
                     router.push("/");

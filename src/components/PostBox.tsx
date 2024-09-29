@@ -29,9 +29,11 @@ import { RWebShare } from "react-web-share";
 export default function PostBox({
   id,
   bookmarks,
+  onDelete,
 }: {
   id: string;
   bookmarks: any[];
+  onDelete?: () => void;
 }) {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -107,19 +109,6 @@ export default function PostBox({
       toast({
         title: res.data.message,
       });
-    } catch (error: any) {
-      toast({
-        title: error.response.data.message,
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleDeletePost = async (e: any) => {
-    e.stopPropagation();
-    try {
-      await axios.delete(`/api/post/delete?postId=${id}`);
-      router.refresh();
     } catch (error: any) {
       toast({
         title: error.response.data.message,
@@ -230,7 +219,12 @@ export default function PostBox({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-gray-950">
               <div
-                onClick={handleDeletePost}
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  if(onDelete) {
+                    onDelete();
+                  }
+                }}
                 className=" cursor-pointer text-white text-md p-2"
               >
                 <div className="flex gap-1.5 font-semibold text-red-500 ">

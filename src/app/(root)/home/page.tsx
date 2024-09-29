@@ -36,6 +36,21 @@ export default function Home() {
       });
     }
   };
+  
+  const handleDeletePost = async (postId : string) => {
+    try {
+      await axios.delete(`/api/post/delete?postId=${postId}`);
+      toast({
+        title : "Post Successfully deleted!"
+      })
+      setPosts((prev) => prev.filter((post) => post.id !== postId))
+    } catch (error: any) {
+      toast({
+        title: error.response.data.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   useEffect(() => {
     getUserInfo();
@@ -59,6 +74,7 @@ export default function Home() {
           id={post.id}
           key={post.id}
           bookmarks={userInfo?.bookmarks}
+          onDelete={() => handleDeletePost(post.id)}
         />
       ))}
     </div>

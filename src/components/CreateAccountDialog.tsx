@@ -46,7 +46,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="bg-black text-white sm:min-w-[600px] sm:min-h-[500px] rounded-2xl shadow-2xl transform transition-all duration-300 ease-out hover:scale-105">
+    <DialogContent className="bg-black text-white w-[350px] md:w-[500px] rounded-2xl shadow-2xl transform transition-all duration-300 ease-out hover:scale-105">
       <DialogHeader>
         <div className="flex justify-center items-center my-5">
           <Image
@@ -57,7 +57,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
             className="rounded-full shadow-xl"
           />
         </div>
-        <DialogTitle className="text-4xl text-center font-extrabold tracking-tight mb-4">
+        <DialogTitle className="text-2xl md:text-4xl text-center font-extrabold tracking-tight mb-4">
           Create Your Account
         </DialogTitle>
       </DialogHeader>
@@ -65,7 +65,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
         <div className="flex items-center gap-4">
           <Label
             htmlFor="username"
-            className="w-1/3 text-right text-lg font-semibold tracking-wide"
+            className="w-[60px] md:w-1/3 text-right text-md mr-3 md:text-lg font-semibold tracking-wide"
           >
             Username
           </Label>
@@ -79,7 +79,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
         <div className="flex items-center gap-4">
           <Label
             htmlFor="name"
-            className="w-1/3 text-right text-lg font-semibold tracking-wide"
+            className="w-[60px] md:w-1/3 text-right text-md mr-3 md:text-lg font-semibold tracking-wide"
           >
             Name
           </Label>
@@ -93,7 +93,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
         <div className="flex items-center gap-4">
           <Label
             htmlFor="email"
-            className="w-1/3 text-right text-lg font-semibold tracking-wide"
+            className="w-[60px] md:w-1/3 text-right text-md mr-3 md:text-lg font-semibold tracking-wide"
           >
             Email
           </Label>
@@ -107,7 +107,7 @@ const CreateAccountDialog = ({ open, onOpenChange }: DialogProps) => {
         <div className="flex items-center gap-4">
           <Label
             htmlFor="password"
-            className="w-1/3 text-right text-lg font-semibold tracking-wide"
+            className="w-[60px] md:w-1/3 text-right text-md mr-3 md:text-lg font-semibold tracking-wide"
           >
             Password
           </Label>

@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <div className="flex justify-evenly items-center py-11 bg-black h-screen">
-      <div className="bg-transparent">
+      <div className="hidden lg:block bg-transparent">
         <Image
           src="/logo.jpg"
           alt="Logo"
@@ -42,7 +42,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex flex-col mt-10 space-y-6">
+      <div className="flex flex-col ml-10 lg:ml-0  mt-10 space-y-6">
         <h1 className="font-extrabold text-7xl text-white">Happening now</h1>
         <h4 className="font-extrabold text-4xl text-white mt-4 text-left">
           Join today.

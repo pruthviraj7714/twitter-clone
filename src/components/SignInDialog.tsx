@@ -58,7 +58,7 @@ const SignInDialog = ({ open, onOpenChange }: DialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black text-white sm:max-w-[425px] border border-gray-700 rounded-lg shadow-lg">
+      <DialogContent className="bg-black text-white w-[360px] md:w-[466px] border border-gray-700 rounded-lg shadow-lg">
         <DialogHeader>
           <div className="flex justify-center items-center my-3">
             <Image

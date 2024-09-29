@@ -66,36 +66,11 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    await prisma.like.deleteMany({
-      where: {
-        postId,
-      },
-    });
-
-    await prisma.bookmark.deleteMany({
-      where: {
-        postId,
-      },
-    });
-    
-    await prisma.comment.deleteMany({
-      where : {
-        postId
-      }
-    })
-    
-    await prisma.notification.deleteMany({
-      where : {
-        postId
-      }
-    })
-    
     await prisma.post.delete({
       where: {
         id: postId,
       },
     });
-
 
     return NextResponse.json(
       {

@@ -1,7 +1,7 @@
 import { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useUserInfo } from "@/hooks/user";
-import { ImageIcon, SmileIcon, XIcon } from "lucide-react";
+import { ImageIcon, LucideLoader2, SmileIcon, XIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRef, useState } from "react";
 import axios from "axios";
@@ -123,17 +123,15 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
     setMediaUrl(null);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[525px] max-h-[700px] bg-black text-white rounded-xl p-8 shadow-2xl">
         <div className="w-full flex-1 h-auto p-4">
           <div className="flex gap-3">
             <div className="h-12 w-12 rounded-full bg-gray-600 flex justify-center items-center text-white">
-              {userInfo.photo ? (
+              {isLoading ? (
+                <LucideLoader2 className="animate-spin" />
+              ) : userInfo.photo ? (
                 <img
                   src={userInfo.photo}
                   alt="Profile Photo"
@@ -179,7 +177,11 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
               />
               {showEmojiPicker && (
                 <div className="absolute top-10">
-                  <EmojiPicker className="z-20" theme={Theme.DARK} onEmojiClick={addEmoji} />
+                  <EmojiPicker
+                    className="z-20"
+                    theme={Theme.DARK}
+                    onEmojiClick={addEmoji}
+                  />
                 </div>
               )}
             </div>

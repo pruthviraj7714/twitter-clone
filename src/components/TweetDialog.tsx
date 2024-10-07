@@ -205,7 +205,7 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
               )}
               <Button
                 onClick={createPost}
-                disabled={text.length === 0}
+                disabled={uploading || text.length === 0}
                 className="rounded-full bg-sky-400 hover:bg-sky-500 px-5 py-2 text-white font-semibold"
               >
                 {uploading ? "Uploading..." : "Post"}

@@ -28,7 +28,6 @@ export default function Home() {
     try {
       const res = await axios.get("/api/post/all");
       setPosts(res.data.posts);
-      console.log(res.data);
     } catch (error: any) {
       toast({
         title: error.response.data.message,

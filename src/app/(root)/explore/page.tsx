@@ -18,7 +18,6 @@ export default function ExplorePage() {
     try {
       const res = await axios.get(`/api/user/all?query=${query}`);
       setUsers(res.data.users);
-      console.log(res.data);
     } catch (error: any) {
       toast({
         title: error.response.data.message,
@@ -31,16 +30,9 @@ export default function ExplorePage() {
 
   useEffect(() => {
     getAllUsers();
-    if (status !== "loading") {
-      console.log(
-        users[0]?.followers?.some(
-          (l: any) => l.followingId === Number(session?.user.id)
-        )
-      );
-    }
   }, [status, query]);
 
-  if (isLoading) {
+  if (isLoading || status === "loading") {
     return (
       <div className="min-h-screen flex justify-center items-center bg-black">
         <div className="w-16 h-16 border-4 border-sky-400 border-t-transparent border-t-4 rounded-full animate-spin"></div>

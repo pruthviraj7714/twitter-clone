@@ -26,7 +26,6 @@ export default function FollowingsPage({
           username: params.username,
         },
       });
-      console.log(res.data.followings);
       setFollowings(res.data.followings);
     } catch (error: any) {
       toast({

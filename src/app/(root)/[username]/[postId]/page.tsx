@@ -89,7 +89,6 @@ export default function PostPage({
           (l: any) => l.userId === Number(session?.user?.id)
         )
       );
-      console.log(postInfo);
     } catch (error: any) {
       toast({
         title: error?.response?.data.message,

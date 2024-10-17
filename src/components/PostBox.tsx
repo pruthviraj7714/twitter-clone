@@ -189,7 +189,7 @@ export default function PostBox({
             </span>
             <span className="text-gray-400 text-sm">{relativeTime}</span>
           </div>
-          <div className="mb-3 font-normal text-md text-slate-200">
+          <div  style={{ overflowWrap: 'break-word', wordBreak: 'break-all' }} className="mb-3 font-normal text-md text-slate-200">
             {postInfo.text}
           </div>
           {postInfo.image && (

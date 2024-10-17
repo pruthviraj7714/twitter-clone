@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { useSession } from "next-auth/react";
@@ -36,8 +36,6 @@ export default function ProfileCard({
       });
     }
   };
-
-  useEffect(() => {}, []);
 
   return (
     <div className="w-full border-b border-white/15 hover:bg-white/5 p-2 px-2">

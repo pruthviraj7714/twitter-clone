@@ -1,8 +1,7 @@
 import axios from "axios";
 import { format } from "date-fns";
-import { Dot, User2 } from "lucide-react";
+import { Dot } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { userInfo } from "os";
 import { FaHeart, FaUser } from "react-icons/fa";
 import { useToast } from "./ui/use-toast";
 import { useEffect } from "react";
@@ -12,14 +11,10 @@ export default function NotificationBox({
   type,
   follower,
   post,
-  followerId,
   liker,
-  likerId,
   replier,
-  name,
   comment,
   postId,
-  user,
   read,
   username,
 }: {
@@ -27,15 +22,12 @@ export default function NotificationBox({
   type: "FOLLOW" | "LIKE" | "REPLY";
   follower: any;
   post: any;
-  followerId: number;
   liker: any;
   user: any;
   replier: any;
-  likerId: number;
   postId: string;
   comment: any;
   read: boolean;
-  name: string;
   username: string;
 }) {
   const router = useRouter();

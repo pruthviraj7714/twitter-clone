@@ -2,7 +2,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { format } from "date-fns";
-import { ArrowLeft, Dot, Ellipsis, Reply, Share, Trash2 } from "lucide-react";
+import { ArrowLeft, Ellipsis, Share, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -154,7 +154,7 @@ export default function PostPage({
     e.stopPropagation();
     try {
       await axios.delete(`/api/post/delete?postId=${params.postId}`);
-      router.push('/home')
+      router.push("/home");
     } catch (error: any) {
       toast({
         title: error.response.data.message,
@@ -243,7 +243,7 @@ export default function PostPage({
             className="ml-1.5 cursor-pointer"
             size={20}
             onClick={() => {
-              router.back()
+              router.back();
             }}
           />
         </div>
@@ -278,7 +278,10 @@ export default function PostPage({
             </span>
             <span className="text-white/45">@{username}</span>
           </div>
-          <div className="mb-3 mt-1.5 font-normal text-md text-slate-200">
+          <div
+            style={{ overflowWrap: "break-word", wordBreak: "break-all" }}
+            className="mb-3 mt-1.5 font-normal text-md text-slate-200"
+          >
             {postInfo.text}
           </div>
           {postInfo.image && (
@@ -309,12 +312,12 @@ export default function PostPage({
                 <Ellipsis size={20} />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
+            <DropdownMenuContent className="w-44 outline-none bg-black">
               <div
                 onClick={handleDeletePost}
                 className=" cursor-pointer text-white text-md p-2"
               >
-                <div className="flex gap-1.5 font-semibold text-red-500 ">
+                <div className="flex gap-1.5 font-semibold text-red-500">
                   <Trash2 size={20} />
                   <span>Delete</span>
                 </div>
@@ -462,7 +465,7 @@ export default function PostPage({
 
       <div className="border w-full border-white/15" />
       <div className="w-full flex flex-col">
-        {postInfo?.comments?.map((comment: any, index: number) => (
+        {postInfo?.comments?.map((comment: any) => (
           <CommentBox
             id={comment.id}
             key={comment.id}

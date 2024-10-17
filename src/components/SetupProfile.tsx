@@ -25,11 +25,10 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
   const [bio, setBio] = useState("");
   const photoRef = useRef<HTMLInputElement>(null);
   const headerPhotoRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [headerPhotoUrl, setHeaderPhotoUrl] = useState<string | null>(null);
-  const { userInfo, isLoading } = useUserInfo();
-  const { data: session, update, status } = useSession();
+  const { userInfo } = useUserInfo();
+  const { update } = useSession();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -40,7 +39,6 @@ export function ProfileSetupDialog({ open, onOpenChange }: DialogProps) {
   ) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setSelectedFile(file);
 
       setFile(URL.createObjectURL(file));
 

@@ -179,7 +179,7 @@ export default function Twitte({
           )}
         </div>
         <div className="flex gap-2 items-center">
-          {text.length >= maxLength ? (
+          {text.length > maxLength ? (
             <div className="h-10 w-10 border-2 text-xs p-1 font-sans border-red-500 text-red-500 flex justify-center items-center">
               {`-${text.length - maxLength}`}
             </div>
@@ -198,7 +198,7 @@ export default function Twitte({
           )}
           <Button
             onClick={createPost}
-            disabled={text.length === 0}
+            disabled={text.length === 0 || text.length > maxLength}
             className="rounded-full bg-sky-400 hover:bg-sky-500 px-5 py-2 text-white font-semibold"
           >
             {uploading ? "Uploading..." : "Post"}

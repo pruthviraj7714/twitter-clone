@@ -82,7 +82,6 @@ export default function TweetDialog({ open, onOpenChange }: DialogProps) {
         if (onOpenChange) {
           onOpenChange(false);
         }
-        router.refresh();
       } else {
         throw new Error("Failed to create post");
       }

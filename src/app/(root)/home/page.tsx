@@ -35,7 +35,18 @@ export default function Home() {
       });
     }
   };
-  
+  const handleCreatePost = async ( {payload} : {payload : any}) => {
+    try {
+      const res = await axios.post("/api/post/create", payload);
+      // getPosts();
+      setPosts((prev) => [...prev, res.data.post].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+    } catch (error: any) {
+      toast({
+        title: error.response?.data?.message || "Failed to create post",
+        variant: "destructive",
+      });
+    }
+  }
   const handleDeletePost = async (postId : string) => {
     try {
       await axios.delete(`/api/post/delete?postId=${postId}`);
@@ -66,7 +77,7 @@ export default function Home() {
 
   return (
     <div className="border-l border-r p-2 border-white/15 bg-black text-white flex flex-col">
-      <Twitte photo={userInfo?.photo} username={userInfo?.username} />
+      <Twitte photo={userInfo?.photo} username={userInfo?.username} onAddPost={handleCreatePost} />
 
       {posts.map((post) => (
         <PostBox

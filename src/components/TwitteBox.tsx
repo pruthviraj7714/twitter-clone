@@ -10,9 +10,11 @@ import EmojiPicker, { Theme } from "emoji-picker-react";
 export default function Twitte({
   username,
   photo,
+  onAddPost,
 }: {
   username: string;
   photo: string;
+  onAddPost: ({ payload }: { payload: any }) => void;
 }) {
   const [text, setText] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -71,21 +73,16 @@ export default function Twitte({
         video: fileType === "video" ? mediaUrl : undefined,
       };
 
-      const res = await axios.post("/api/post/create", payload);
+      onAddPost({ payload });
 
-      if (res.status === 201) {
-        toast({
-          title: "Post created successfully!",
-        });
-        setText("");
-        setSelectedFile(null);
-        setFileType(null);
-        setMediaUrl(null);
-        if (textareaRef.current) textareaRef.current.style.height = "auto";
-        router.refresh();
-      } else {
-        throw new Error("Failed to create post");
-      }
+      toast({
+        title: "Post created successfully!",
+      });
+      setText("");
+      setSelectedFile(null);
+      setFileType(null);
+      setMediaUrl(null);
+      if (textareaRef.current) textareaRef.current.style.height = "auto";
     } catch (error: any) {
       toast({
         title: error.response?.data?.message || "Failed to create post",

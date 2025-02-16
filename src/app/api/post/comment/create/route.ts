@@ -48,6 +48,13 @@ export async function POST(req: NextRequest) {
         postId,
         text,
       },
+      include : {
+        user : {
+          select : {
+            username : true
+          }
+        }
+      }
     });
 
     if (Number(session.user.id) !== post.userId) {
@@ -59,6 +66,7 @@ export async function POST(req: NextRequest) {
           postId,
           type: "REPLY",
         },
+       
       });
     }
 

@@ -115,6 +115,24 @@ export default function PostPage({
     }
   };
 
+  const handleDeleteComment = async (id : string) => {
+    try {
+      await axios.delete(`/api/post/comment/delete?commentId=${id}`);
+      toast({
+        title: "Comment Successfully Deleted",
+      });
+      setPostInfo((prev : any) => ({
+        ...prev,
+        comments : prev.comments.filter((c : any) => c.id !== id)
+      }))
+    } catch (error : any) {
+      toast({
+        title: error.response.data.message,
+        variant: "destructive",
+      })
+    }
+  }
+
   const handleBookmark = async (e: any) => {
     e.stopPropagation();
     try {
@@ -134,12 +152,15 @@ export default function PostPage({
   const handleReply = async () => {
     setUploading(true);
     try {
-      await axios.post("/api/post/comment/create", {
+      const res = await axios.post("/api/post/comment/create", {
         postId,
         text,
       });
       setText("");
-      router.refresh();
+      setPostInfo((prev: any) => ({
+        ...prev,
+        comments: [...prev.comments, res.data.comment].sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+      }));
     } catch (error: any) {
       toast({
         title: error.response.data.message,
@@ -473,6 +494,7 @@ export default function PostPage({
             userImage={comment?.user?.photo}
             username={comment?.user?.username}
             createdAtInfo={comment?.createdAt}
+            onDeleteComment={handleDeleteComment}
           />
         ))}
       </div>

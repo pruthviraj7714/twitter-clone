@@ -7,8 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useToast } from "./ui/use-toast";
-import axios from "axios";
 
 export default function CommentBox({
   id,
@@ -16,12 +14,14 @@ export default function CommentBox({
   userImage,
   createdAtInfo,
   text,
+  onDeleteComment
 }: {
   id: string;
   username: string;
   userImage: string;
   createdAtInfo: Date;
   text: string;
+  onDeleteComment : (id : string) => void
 }) {
   const router = useRouter();
 
@@ -30,8 +30,6 @@ export default function CommentBox({
   const seconds = Math.floor(
     (now.getTime() - new Date(createdAt).getTime()) / 1000
   );
-
-  const { toast } = useToast();
 
   let relativeTime;
   if (seconds < 60) {
@@ -47,21 +45,6 @@ export default function CommentBox({
   } else {
     relativeTime = format(new Date(createdAt), "yyyy");
   }
-
-  const handleDeleteComment = async () => {
-    try {
-      await axios.delete(`/api/post/comment/delete?commentId=${id}`);
-      toast({
-        title: "Comment Successfully Deleted",
-      });
-      router.refresh();
-    } catch (error: any) {
-      toast({
-        title: error?.response?.data.message,
-        variant: "destructive"
-      });
-    }
-  };
 
   return (
     <div className="flex justify-between mb-2 p-2 border-b border-white/15">
@@ -105,7 +88,7 @@ export default function CommentBox({
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-44 outline-none bg-black hover:bg-white/5">
           <div
-            onClick={handleDeleteComment}
+            onClick={() => onDeleteComment(id)}
             className="bg-black hover:bg-white/5 cursor-pointer text-white text-md p-2"
           >
             <div className="flex gap-1.5 font-semibold text-red-500 ">
